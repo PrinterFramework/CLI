@@ -1,0 +1,2 @@
+import { {{name}}Component } from '{{path}}/{{prefix}}.component'
+import { {{name}} } from '{{path}}/{{prefix}}.connect'

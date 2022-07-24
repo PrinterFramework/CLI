@@ -1,0 +1,5 @@
+export interface {{name}}I {}
+
+export default function {{name}}({}: {{name}}I) {
+  return <h1>Page {{name}}</h1>
+}

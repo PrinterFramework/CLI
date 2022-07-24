@@ -1,0 +1,16 @@
+{
+  "componentFolder": false,
+  "component": {
+    "index": true,
+    "component": true,
+    "style": true,
+    "test": false
+  },
+  "crud": {
+    "create": true,
+    "update": true,
+    "delete": true,
+    "list": true,
+    "get": true
+  }
+}

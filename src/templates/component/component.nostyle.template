@@ -1,0 +1,11 @@
+export interface {{name}}I {}
+
+export function {{name}}Component({}: {{name}}I) {
+  return (
+    <div>
+      <h2>Component {{name}}</h2>
+    </div>
+  )
+}
+
+export default {{name}}Component

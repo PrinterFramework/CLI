@@ -1,0 +1,17 @@
+import { NextApiRequest, NextApiResponse } from 'next'
+import { withIronSessionApiRoute } from 'iron-session/next'
+import { Session } from 'util/session'
+
+export const TestRoute = withIronSessionApiRoute(
+  async (req: NextApiRequest, res: NextApiResponse) => {
+    try {
+      res.status(200).send({ status: 'OK' })
+    } catch (error) {
+      console.error(error)
+      res.status(500).send({ status: 'ERROR', error })
+    }
+  },
+  Session
+)
+
+export default TestRoute

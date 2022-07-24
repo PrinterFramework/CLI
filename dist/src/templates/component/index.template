@@ -1,0 +1,2 @@
+export * from '{{path}}/{{prefix}}.component'
+export * from '{{path}}/{{prefix}}.style'

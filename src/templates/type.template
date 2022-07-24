@@ -1,0 +1,5 @@
+export interface {{name}}Type {
+
+}
+
+export default {{name}}Type
