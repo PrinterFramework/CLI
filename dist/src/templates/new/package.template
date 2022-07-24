@@ -7,7 +7,7 @@
         "start": "next start",
         "prepare": "husky install",
         "lint": "eslint . --ext ts,tsx --resolve-plugins-relative-to .",
-        "scss": "node-sass --output-style compact -rw public/assets/scss/printer.scss -o public/assets/css",
+        "scss": "node-sass --output-style compact -r public/assets/scss/printer.scss -o public/assets/css",
         "prisma": "npx prisma generate && npx prisma db push"
     },
     "dependencies": {

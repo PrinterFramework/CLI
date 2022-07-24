@@ -5,7 +5,7 @@ import { Log } from '../helpers/log'
 import { Config } from '../config'
 
 export async function generateComponent (path: string) {
-  if (exists(join(process.cwd(), path)) !== false) {
+  if (exists(join(process.cwd(), path)) || exists(join(process.cwd(), `${path}.tsx`))) {
     const result = await prompts({
       type: 'confirm',
       name: 'overwrite',
