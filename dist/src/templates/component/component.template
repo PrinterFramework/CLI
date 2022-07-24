@@ -2,10 +2,12 @@ import { {{name}}Style } from '{{path}}/{{prefix}}.style'
 
 export interface {{name}}I {}
 
-export function {{name}}Component({}: {{name}}I) {
+export function {{name}}({}: {{name}}I) {
   return (
     <{{name}}Style>
       <h2>Component {{name}}</h2>
     </{{name}}Style>
   )
 }
+
+export default {{name}}

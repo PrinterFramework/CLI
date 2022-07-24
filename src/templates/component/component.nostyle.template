@@ -1,6 +1,6 @@
 export interface {{name}}I {}
 
-export function {{name}}Component({}: {{name}}I) {
+export function {{name}}({}: {{name}}I) {
   return (
     <div>
       <h2>Component {{name}}</h2>
@@ -8,4 +8,4 @@ export function {{name}}Component({}: {{name}}I) {
   )
 }
 
-export default {{name}}Component
+export default {{name}}

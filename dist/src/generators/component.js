@@ -52,7 +52,7 @@ function generateComponent(path) {
         return __generator(this, function (_l) {
             switch (_l.label) {
                 case 0:
-                    if (!((0, fs_jetpack_1.exists)((0, path_1.join)(process.cwd(), path)) !== false)) return [3 /*break*/, 2];
+                    if (!((0, fs_jetpack_1.exists)((0, path_1.join)(process.cwd(), path)) || (0, fs_jetpack_1.exists)((0, path_1.join)(process.cwd(), "".concat(path, ".tsx"))))) return [3 /*break*/, 2];
                     return [4 /*yield*/, (0, prompts_1.default)({
                             type: 'confirm',
                             name: 'overwrite',

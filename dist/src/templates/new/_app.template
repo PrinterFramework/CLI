@@ -1,3 +1,4 @@
+import 'public/assets/scss/printer.scss'
 import App, { AppContext, AppInitialProps } from 'next/app'
 import { wrapper } from 'redux/wrapper'
 
