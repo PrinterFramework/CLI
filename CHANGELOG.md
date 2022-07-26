@@ -1,5 +1,9 @@
 # 🛠️ CHANGELOG
 
+## v1.1.2
+
+- Array Typed injections were patched to use [...] instead of {...} for spread assignment.
+
 ## v1.1.1
 
 - Made sure type injections support array namespaces

@@ -43,7 +43,7 @@ var log_1 = require("../helpers/log");
 var match_1 = require("../helpers/match");
 function inject(slice, component) {
     return __awaiter(this, void 0, void 0, function () {
-        var filePath, pathArray, fileName, fileContents, fileComponentPath, slicePath, sliceContents, matches, splitFile, sliceMatch, newContents, stateInjections, actionInjections, i, index, match, decorator, typeMap, varKey, varKey, hasExistingImport, i, stateInjection, typeName, i, stateInjection, injectionLine, tempContents, typeMap, value, typeName, injectionLine, tempContents, tempContents, fileComponentPath;
+        var filePath, pathArray, fileName, fileContents, fileComponentPath, slicePath, sliceContents, matches, splitFile, sliceMatch, newContents, stateInjections, actionInjections, i, index, match, decorator, typeMap, varKey, varKey, hasExistingImport, i, stateInjection, typeName, i, stateInjection, injectionLine, tempContents, typeMap, value, spreadLeft, spreadRight, typeName, injectionLine, tempContents, tempContents, fileComponentPath;
         return __generator(this, function (_a) {
             filePath = (0, path_1.join)(process.cwd(), component);
             pathArray = component.split('/');
@@ -111,6 +111,8 @@ function inject(slice, component) {
                     tempContents = newContents.split('\n');
                     typeMap = 'any';
                     value = stateInjection.value;
+                    spreadLeft = '{';
+                    spreadRight = '}';
                     if (stateInjection.type) {
                         typeName = stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1) + 'Type';
                         if (typeName.indexOf('[]') !== -1) {
@@ -118,8 +120,10 @@ function inject(slice, component) {
                             value = value.replaceAll('[]', '');
                         }
                         typeMap = "{ ".concat(stateInjection.type.replaceAll('[]', ''), ": { ").concat(value, ": ").concat(typeName, " } }");
+                        spreadLeft = '[';
+                        spreadRight = ']';
                     }
-                    tempContents[injectionLine] = tempContents[injectionLine] + "\n  const ".concat(value, " = useSelector((state: ").concat(typeMap, ") => ({ ...state.").concat(slice, ".").concat(value, " }))");
+                    tempContents[injectionLine] = tempContents[injectionLine] + "\n  const ".concat(value, " = useSelector((state: ").concat(typeMap, ") => (").concat(spreadLeft, " ...state.").concat(slice, ".").concat(value, " ").concat(spreadRight, "))");
                     if (i === stateInjections.length - 1) {
                         tempContents[injectionLine] = tempContents[injectionLine] + '\n';
                     }
