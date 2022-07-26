@@ -53,7 +53,7 @@ var crud_1 = require("./generators/crud");
 var inject_1 = require("./generators/inject");
 exports.Printer = new commander_1.Command('🖨️ Printer');
 exports.Printer
-    .version('1.1.1')
+    .version('1.1.2')
     .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.');
 exports.Printer
     .command('new [path]')

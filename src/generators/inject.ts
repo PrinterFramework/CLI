@@ -83,6 +83,8 @@ export async function inject (slice: string, component: string) {
 
       let typeMap = 'any'
       let value = stateInjection.value
+      let spreadLeft = '{'
+      let spreadRight = '}'
 
       if (stateInjection.type) {
         let typeName = stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1) + 'Type'
@@ -91,9 +93,12 @@ export async function inject (slice: string, component: string) {
           value = value.replaceAll('[]', '')
         }
         typeMap = `{ ${stateInjection.type.replaceAll('[]', '')}: { ${value}: ${typeName} } }`
+
+        spreadLeft = '['
+        spreadRight = ']'
       }
 
-      tempContents[injectionLine] = tempContents[injectionLine] + `\n  const ${value} = useSelector((state: ${typeMap}) => ({ ...state.${slice}.${value} }))`
+      tempContents[injectionLine] = tempContents[injectionLine] + `\n  const ${value} = useSelector((state: ${typeMap}) => (${spreadLeft} ...state.${slice}.${value} ${spreadRight}))`
 
       if (i === stateInjections.length - 1) {
         tempContents[injectionLine] = tempContents[injectionLine] + '\n'
