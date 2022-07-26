@@ -14,7 +14,7 @@ import { inject } from './generators/inject'
 export const Printer = new Command('🖨️ Printer')
 
 Printer
-  .version('1.1.0')
+  .version('1.1.1')
   .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.')
 
 Printer

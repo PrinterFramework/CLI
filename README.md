@@ -5,7 +5,7 @@
 ## Automation Tooling for Next, Redux and Prisma
 
 ![license](https://img.shields.io/badge/license-AGPLv3-blue.svg)
-![version](https://img.shields.io/badge/version-1.1.0-blue.svg)
+![version](https://img.shields.io/badge/version-1.1.1-blue.svg)
 [![CircleCI](https://circleci.com/gh/PrinterFramework/CLI.svg?style=svg)](https://circleci.com/gh/PrinterFramework/CLI)
 [![codecov](https://codecov.io/gh/PrinterFramework/CLI/branch/master/graph/badge.svg)](https://codecov.io/gh/PrinterFramework/CLI)
 

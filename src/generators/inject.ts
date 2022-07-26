@@ -65,9 +65,12 @@ export async function inject (slice: string, component: string) {
     const stateInjection = stateInjections[i]
 
     if (stateInjection.type) {
-      const typeName = `${stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1)}Type`
+      let typeName = `${stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1)}Type`
+      if (typeName.indexOf('[]') !== -1) {
+        typeName = typeName.replaceAll('[]', '')
+      }
       if (findMatches(newContents, typeMatcher(typeName)).length === 0) {
-        newContents = `import ${typeName} from 'types/${stateInjection.type}'\n${newContents}`
+        newContents = `import ${typeName} from 'types/${stateInjection.type.replaceAll('[]', '')}'\n${newContents}`
       }
     }
   }
@@ -79,12 +82,18 @@ export async function inject (slice: string, component: string) {
       const tempContents = newContents.split('\n')
 
       let typeMap = 'any'
+      let value = stateInjection.value
+
       if (stateInjection.type) {
-        const typeName = stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1)
-        typeMap = `{ ${stateInjection.type}: { ${stateInjection.value}: ${typeName}Type } }`
+        let typeName = stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1) + 'Type'
+        if (typeName.indexOf('[]') !== -1) {
+          typeName = typeName.replaceAll('[]', '') + '[]'
+          value = value.replaceAll('[]', '')
+        }
+        typeMap = `{ ${stateInjection.type.replaceAll('[]', '')}: { ${value}: ${typeName} } }`
       }
 
-      tempContents[injectionLine] = tempContents[injectionLine] + `\n  const ${stateInjection.value} = useSelector((state: ${typeMap}) => ({ ...state.${slice}.${stateInjection.value} }))`
+      tempContents[injectionLine] = tempContents[injectionLine] + `\n  const ${value} = useSelector((state: ${typeMap}) => ({ ...state.${slice}.${value} }))`
 
       if (i === stateInjections.length - 1) {
         tempContents[injectionLine] = tempContents[injectionLine] + '\n'
@@ -93,7 +102,7 @@ export async function inject (slice: string, component: string) {
       newContents = tempContents.join('\n')
     }
 
-    Log(`    ✅  State '${stateInjection.value}' was injected into the component ${stateInjection.type ? `with the type ${stateInjection.type}` : null}`.green)
+    Log(`    ✅  State '${stateInjection.value}' was injected into the component ${stateInjection.type ? `with the type ${stateInjection.type}` : ''}`.green)
   }
 
   if (actionInjections.length > 0) {

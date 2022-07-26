@@ -46,22 +46,24 @@ export async function generateComponent (path: string) {
     Log(`    ✅  Created ${fileName}.component.tsx`.green)
 
     if (Config.component?.test) {
-      const test = read(join(__dirname, '..', 'templates', 'component', 'test.template'))?.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName)
+      const test = read(join(__dirname, '..', 'templates', 'component', 'test.template'))?.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path)
       const testPath = join(process.cwd(), path, `${fileName}.test.tsx`)
 
       write(testPath, test || '')
       Log(`    ✅  Created ${fileName}.test.tsx`.green)
     }
 
-    let index = read(join(__dirname, '..', 'templates', 'component', 'index.nostyle.template'))?.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path)
-    const indexPath = join(process.cwd(), path, 'index.tsx')
+    if (Config.component?.index) {
+      let index = read(join(__dirname, '..', 'templates', 'component', 'index.nostyle.template'))?.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path)
+      const indexPath = join(process.cwd(), path, 'index.tsx')
 
-    if (Config.component?.style === true) {
-      index = read(join(__dirname, '..', 'templates', 'component', 'index.template'))?.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path).replaceAll('{{path}}', path)
+      if (Config.component?.style === true) {
+        index = read(join(__dirname, '..', 'templates', 'component', 'index.template'))?.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path).replaceAll('{{path}}', path)
+      }
+
+      write(indexPath, index || '')
+      Log('    ✅  Created index.tsx'.green)
     }
-
-    write(indexPath, index || '')
-    Log('    ✅  Created index.tsx'.green)
   } else {
     const component = read(join(__dirname, '..', 'templates', 'component', 'component.nostyle.template'))?.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path)
     const componentPath = join(process.cwd(), `${path}.tsx`)

@@ -43,7 +43,7 @@ var log_1 = require("../helpers/log");
 var match_1 = require("../helpers/match");
 function inject(slice, component) {
     return __awaiter(this, void 0, void 0, function () {
-        var filePath, pathArray, fileName, fileContents, fileComponentPath, slicePath, sliceContents, matches, splitFile, sliceMatch, newContents, stateInjections, actionInjections, i, index, match, decorator, typeMap, varKey, varKey, hasExistingImport, i, stateInjection, typeName, i, stateInjection, injectionLine, tempContents, typeMap, typeName, injectionLine, tempContents, tempContents, fileComponentPath;
+        var filePath, pathArray, fileName, fileContents, fileComponentPath, slicePath, sliceContents, matches, splitFile, sliceMatch, newContents, stateInjections, actionInjections, i, index, match, decorator, typeMap, varKey, varKey, hasExistingImport, i, stateInjection, typeName, i, stateInjection, injectionLine, tempContents, typeMap, value, typeName, injectionLine, tempContents, tempContents, fileComponentPath;
         return __generator(this, function (_a) {
             filePath = (0, path_1.join)(process.cwd(), component);
             pathArray = component.split('/');
@@ -96,8 +96,11 @@ function inject(slice, component) {
                 stateInjection = stateInjections[i];
                 if (stateInjection.type) {
                     typeName = "".concat(stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1), "Type");
+                    if (typeName.indexOf('[]') !== -1) {
+                        typeName = typeName.replaceAll('[]', '');
+                    }
                     if ((0, match_1.findMatches)(newContents, (0, match_1.typeMatcher)(typeName)).length === 0) {
-                        newContents = "import ".concat(typeName, " from 'types/").concat(stateInjection.type, "'\n").concat(newContents);
+                        newContents = "import ".concat(typeName, " from 'types/").concat(stateInjection.type.replaceAll('[]', ''), "'\n").concat(newContents);
                     }
                 }
             }
@@ -107,17 +110,22 @@ function inject(slice, component) {
                     injectionLine = (0, match_1.findMatches)(newContents, (0, match_1.functionMatcher)(fileName))[0];
                     tempContents = newContents.split('\n');
                     typeMap = 'any';
+                    value = stateInjection.value;
                     if (stateInjection.type) {
-                        typeName = stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1);
-                        typeMap = "{ ".concat(stateInjection.type, ": { ").concat(stateInjection.value, ": ").concat(typeName, "Type } }");
+                        typeName = stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1) + 'Type';
+                        if (typeName.indexOf('[]') !== -1) {
+                            typeName = typeName.replaceAll('[]', '') + '[]';
+                            value = value.replaceAll('[]', '');
+                        }
+                        typeMap = "{ ".concat(stateInjection.type.replaceAll('[]', ''), ": { ").concat(value, ": ").concat(typeName, " } }");
                     }
-                    tempContents[injectionLine] = tempContents[injectionLine] + "\n  const ".concat(stateInjection.value, " = useSelector((state: ").concat(typeMap, ") => ({ ...state.").concat(slice, ".").concat(stateInjection.value, " }))");
+                    tempContents[injectionLine] = tempContents[injectionLine] + "\n  const ".concat(value, " = useSelector((state: ").concat(typeMap, ") => ({ ...state.").concat(slice, ".").concat(value, " }))");
                     if (i === stateInjections.length - 1) {
                         tempContents[injectionLine] = tempContents[injectionLine] + '\n';
                     }
                     newContents = tempContents.join('\n');
                 }
-                (0, log_1.Log)("    \u2705  State '".concat(stateInjection.value, "' was injected into the component ").concat(stateInjection.type ? "with the type ".concat(stateInjection.type) : null).green);
+                (0, log_1.Log)("    \u2705  State '".concat(stateInjection.value, "' was injected into the component ").concat(stateInjection.type ? "with the type ".concat(stateInjection.type) : '').green);
             }
             if (actionInjections.length > 0) {
                 if ((0, match_1.findMatches)(newContents, match_1.DispatchMatcher).length === 0) {

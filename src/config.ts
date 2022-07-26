@@ -40,7 +40,7 @@ export function registerConfig () {
   try {
     const config = read(join(process.cwd(), 'printer.config.json')) || ''
     const data = JSON.parse(config)
-    Config = { ...data }
+    Config = Object.assign(Config, { ...data })
   } catch (error) {
     Log('👷  Could not load Printer config'.yellow)
   }
