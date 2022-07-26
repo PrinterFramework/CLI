@@ -35,7 +35,7 @@ function registerConfig() {
     try {
         var config = (0, fs_jetpack_1.read)((0, path_1.join)(process.cwd(), 'printer.config.json')) || '';
         var data = JSON.parse(config);
-        exports.Config = __assign({}, data);
+        exports.Config = Object.assign(exports.Config, __assign({}, data));
     }
     catch (error) {
         (0, log_1.Log)('👷  Could not load Printer config'.yellow);

@@ -1,5 +1,15 @@
 # 🛠️ CHANGELOG
 
+## v1.1.1
+
+- Made sure type injections support array namespaces
+
+- Made sure component folder test files inputted paths properly
+
+- Fixed a console error where type injections with no types displayed "null" after output.
+
+- Printer Config is now dynamic and doesn't need to be full to preserve default options.
+
 ## v1.1.0
 
 - Made sure component generation checks both types of component structures for overwrite confirmation
