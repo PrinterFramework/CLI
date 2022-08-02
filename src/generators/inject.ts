@@ -1,7 +1,7 @@
 import { join } from 'path'
 import { exists, read, write } from 'fs-jetpack'
 import { Log } from '../helpers/log'
-import { findMatches, DispatchMatcher, SliceMatcher, ReduxOptionalMatcher, functionMatcher, selectorMatcher, actionMatcher, typeMatcher } from '../helpers/match'
+import { findMatches, DispatchMatcher, SliceMatcher, ReduxOptionalMatcher, functionMatcher, selectorMatcher, actionMatcher, typeMatcher, BraceMatcher, BraceMatcher2 } from '../helpers/match'
 
 export async function inject (slice: string, component: string) {
   const filePath = join(process.cwd(), component)
@@ -41,7 +41,8 @@ export async function inject (slice: string, component: string) {
 
     if (index < sliceMatch) {
       const varKey = match.split(':')[0].trim()
-      stateInjections.push({ value: varKey, type: typeMap })
+      const addDots = findMatches(match, BraceMatcher).length > 0 || findMatches(match, BraceMatcher2).length > 0
+      stateInjections.push({ value: varKey, type: typeMap, addDots })
     } else {
       const varKey = match.split('(')[0].trim()
       actionInjections.push(varKey)
@@ -91,16 +92,15 @@ export async function inject (slice: string, component: string) {
         if (typeName.indexOf('[]') !== -1) {
           typeName = typeName.replaceAll('[]', '') + '[]'
           value = value.replaceAll('[]', '')
+          spreadLeft = '['
+          spreadRight = ']'
         }
-        typeMap = `{ ${stateInjection.type.replaceAll('[]', '')}: { ${value}: ${typeName} } }`
-
-        spreadLeft = '['
-        spreadRight = ']'
+        typeMap = `{ ${slice}: { ${value}: ${typeName} } }`
       }
 
-      tempContents[injectionLine] = tempContents[injectionLine] + `\n  const ${value} = useSelector((state: ${typeMap}) => (${spreadLeft} ...state.${slice}.${value} ${spreadRight}))`
+      tempContents[injectionLine] = tempContents[injectionLine] + `\n  const ${value} = useSelector((state: ${typeMap}) => ${stateInjection.addDots ? '(' + spreadLeft + ' ' : ''}${stateInjection.addDots ? '...' : ''}state.${slice}.${value}${stateInjection.addDots ? ' ' + spreadRight + ')' : ''})`
 
-      if (i === stateInjections.length - 1) {
+      if (i === 0) {
         tempContents[injectionLine] = tempContents[injectionLine] + '\n'
       }
 

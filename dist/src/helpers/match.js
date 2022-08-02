@@ -1,17 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findMatches = exports.typeMatcher = exports.actionMatcher = exports.selectorMatcher = exports.functionMatcher = exports.DispatchMatcher = exports.ReduxOptionalMatcher = exports.ReduxMatcher = exports.ImportMatcher = exports.SliceMatcher = void 0;
+exports.findMatches = exports.typeMatcher = exports.actionMatcher = exports.selectorMatcher = exports.functionMatcher = exports.BraceMatcher2 = exports.BraceMatcher = exports.DispatchMatcher = exports.ReduxOptionalMatcher = exports.ReduxMatcher = exports.ImportMatcher = exports.SliceMatcher = void 0;
 exports.SliceMatcher = /^(?=.*export)(?=.*createSlice).*$/gmi;
 exports.ImportMatcher = /^(?=.*import)(?=.*from).*$/gmi;
 exports.ReduxMatcher = /^(?=.*import)(?=.*from)(?=.*useSelector)(?=.*useDispatch).*$/gmi;
 exports.ReduxOptionalMatcher = /^(?=.*import)(?=.*from)(?=.*useSelector|useDispatch).*$/gmi;
 exports.DispatchMatcher = /^(?=.*const)(?=.*dispatch)(?=.*useDispatch).*$/gmi;
+exports.BraceMatcher = /^(?=.*\[).*$/gmi;
+exports.BraceMatcher2 = /^(?=.*{).*$/gmi;
 function functionMatcher(name) {
     return new RegExp("^(?=.*function)(?=.*".concat(name, ").*$"), 'gmi');
 }
 exports.functionMatcher = functionMatcher;
 function selectorMatcher(name) {
-    return new RegExp("^(?=.*".concat(name, ")(?=.*useSelector).*$"), 'gmi');
+    return new RegExp("^(?=.*".concat(name, " =)(?=.*useSelector).*$"), 'gmi');
 }
 exports.selectorMatcher = selectorMatcher;
 function actionMatcher(name) {

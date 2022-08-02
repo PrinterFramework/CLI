@@ -43,7 +43,7 @@ var log_1 = require("../helpers/log");
 var match_1 = require("../helpers/match");
 function inject(slice, component) {
     return __awaiter(this, void 0, void 0, function () {
-        var filePath, pathArray, fileName, fileContents, fileComponentPath, slicePath, sliceContents, matches, splitFile, sliceMatch, newContents, stateInjections, actionInjections, i, index, match, decorator, typeMap, varKey, varKey, hasExistingImport, i, stateInjection, typeName, i, stateInjection, injectionLine, tempContents, typeMap, value, spreadLeft, spreadRight, typeName, injectionLine, tempContents, tempContents, fileComponentPath;
+        var filePath, pathArray, fileName, fileContents, fileComponentPath, slicePath, sliceContents, matches, splitFile, sliceMatch, newContents, stateInjections, actionInjections, i, index, match, decorator, typeMap, varKey, addDots, varKey, hasExistingImport, i, stateInjection, typeName, i, stateInjection, injectionLine, tempContents, typeMap, value, spreadLeft, spreadRight, typeName, injectionLine, tempContents, tempContents, fileComponentPath;
         return __generator(this, function (_a) {
             filePath = (0, path_1.join)(process.cwd(), component);
             pathArray = component.split('/');
@@ -74,7 +74,8 @@ function inject(slice, component) {
                 }
                 if (index < sliceMatch) {
                     varKey = match.split(':')[0].trim();
-                    stateInjections.push({ value: varKey, type: typeMap });
+                    addDots = (0, match_1.findMatches)(match, match_1.BraceMatcher).length > 0 || (0, match_1.findMatches)(match, match_1.BraceMatcher2).length > 0;
+                    stateInjections.push({ value: varKey, type: typeMap, addDots: addDots });
                 }
                 else {
                     varKey = match.split('(')[0].trim();
@@ -118,13 +119,13 @@ function inject(slice, component) {
                         if (typeName.indexOf('[]') !== -1) {
                             typeName = typeName.replaceAll('[]', '') + '[]';
                             value = value.replaceAll('[]', '');
+                            spreadLeft = '[';
+                            spreadRight = ']';
                         }
-                        typeMap = "{ ".concat(stateInjection.type.replaceAll('[]', ''), ": { ").concat(value, ": ").concat(typeName, " } }");
-                        spreadLeft = '[';
-                        spreadRight = ']';
+                        typeMap = "{ ".concat(slice, ": { ").concat(value, ": ").concat(typeName, " } }");
                     }
-                    tempContents[injectionLine] = tempContents[injectionLine] + "\n  const ".concat(value, " = useSelector((state: ").concat(typeMap, ") => (").concat(spreadLeft, " ...state.").concat(slice, ".").concat(value, " ").concat(spreadRight, "))");
-                    if (i === stateInjections.length - 1) {
+                    tempContents[injectionLine] = tempContents[injectionLine] + "\n  const ".concat(value, " = useSelector((state: ").concat(typeMap, ") => ").concat(stateInjection.addDots ? '(' + spreadLeft + ' ' : '').concat(stateInjection.addDots ? '...' : '', "state.").concat(slice, ".").concat(value).concat(stateInjection.addDots ? ' ' + spreadRight + ')' : '', ")");
+                    if (i === 0) {
                         tempContents[injectionLine] = tempContents[injectionLine] + '\n';
                     }
                     newContents = tempContents.join('\n');
