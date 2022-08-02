@@ -3,7 +3,14 @@ import { exists, read, write } from 'fs-jetpack'
 import { Log } from '../helpers/log'
 import { findMatches, DispatchMatcher, SliceMatcher, ReduxOptionalMatcher, functionMatcher, selectorMatcher, actionMatcher, typeMatcher, BraceMatcher, BraceMatcher2 } from '../helpers/match'
 
-export async function inject (slice: string, component: string) {
+export interface OptsType {
+  state: boolean
+  action: boolean
+}
+
+export async function inject (slice: string, component: string, opts: OptsType) {
+  console.log(opts)
+
   const filePath = join(process.cwd(), component)
   const pathArray = component.split('/')
   const fileName = pathArray[pathArray.length - 1]
@@ -62,71 +69,75 @@ export async function inject (slice: string, component: string) {
     newContents = `import { useSelector, useDispatch } from 'react-redux'\n\n${newContents}`
   }
 
-  for (let i = 0; i < stateInjections.length; i++) {
-    const stateInjection = stateInjections[i]
-
-    if (stateInjection.type) {
-      let typeName = `${stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1)}Type`
-      if (typeName.indexOf('[]') !== -1) {
-        typeName = typeName.replaceAll('[]', '')
-      }
-      if (findMatches(newContents, typeMatcher(typeName)).length === 0) {
-        newContents = `import ${typeName} from 'types/${stateInjection.type.replaceAll('[]', '')}'\n${newContents}`
-      }
-    }
-  }
-
-  for (let i = 0; i < stateInjections.length; i++) {
-    const stateInjection = stateInjections[i]
-    if (findMatches(newContents, selectorMatcher(stateInjection.value)).length === 0) {
-      const injectionLine = findMatches(newContents, functionMatcher(fileName))[0]
-      const tempContents = newContents.split('\n')
-
-      let typeMap = 'any'
-      let value = stateInjection.value
-      let spreadLeft = '{'
-      let spreadRight = '}'
+  if (opts.state) {
+    for (let i = 0; i < stateInjections.length; i++) {
+      const stateInjection = stateInjections[i]
 
       if (stateInjection.type) {
-        let typeName = stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1) + 'Type'
+        let typeName = `${stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1)}Type`
         if (typeName.indexOf('[]') !== -1) {
-          typeName = typeName.replaceAll('[]', '') + '[]'
-          value = value.replaceAll('[]', '')
-          spreadLeft = '['
-          spreadRight = ']'
+          typeName = typeName.replaceAll('[]', '')
         }
-        typeMap = `{ ${slice}: { ${value}: ${typeName} } }`
+        if (findMatches(newContents, typeMatcher(typeName)).length === 0) {
+          newContents = `import ${typeName} from 'types/${stateInjection.type.replaceAll('[]', '')}'\n${newContents}`
+        }
       }
-
-      tempContents[injectionLine] = tempContents[injectionLine] + `\n  const ${value} = useSelector((state: ${typeMap}) => ${stateInjection.addDots ? '(' + spreadLeft + ' ' : ''}${stateInjection.addDots ? '...' : ''}state.${slice}.${value}${stateInjection.addDots ? ' ' + spreadRight + ')' : ''})`
-
-      if (i === 0) {
-        tempContents[injectionLine] = tempContents[injectionLine] + '\n'
-      }
-
-      newContents = tempContents.join('\n')
     }
 
-    Log(`    ✅  State '${stateInjection.value}' was injected into the component ${stateInjection.type ? `with the type ${stateInjection.type}` : ''}`.green)
+    for (let i = 0; i < stateInjections.length; i++) {
+      const stateInjection = stateInjections[i]
+      if (findMatches(newContents, selectorMatcher(stateInjection.value)).length === 0) {
+        const injectionLine = findMatches(newContents, functionMatcher(fileName))[0]
+        const tempContents = newContents.split('\n')
+
+        let typeMap = 'any'
+        let value = stateInjection.value
+        let spreadLeft = '{'
+        let spreadRight = '}'
+
+        if (stateInjection.type) {
+          let typeName = stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1) + 'Type'
+          if (typeName.indexOf('[]') !== -1) {
+            typeName = typeName.replaceAll('[]', '') + '[]'
+            value = value.replaceAll('[]', '')
+            spreadLeft = '['
+            spreadRight = ']'
+          }
+          typeMap = `{ ${slice}: { ${value}: ${typeName} } }`
+        }
+
+        tempContents[injectionLine] = tempContents[injectionLine] + `\n  const ${value} = useSelector((state: ${typeMap}) => ${stateInjection.addDots ? '(' + spreadLeft + ' ' : ''}${stateInjection.addDots ? '...' : ''}state.${slice}.${value}${stateInjection.addDots ? ' ' + spreadRight + ')' : ''})`
+
+        if (i === 0) {
+          tempContents[injectionLine] = tempContents[injectionLine] + '\n'
+        }
+
+        newContents = tempContents.join('\n')
+      }
+
+      Log(`    ✅  State '${stateInjection.value}' was injected into the component ${stateInjection.type ? `with the type ${stateInjection.type}` : ''}`.green)
+    }
   }
 
-  if (actionInjections.length > 0) {
-    if (findMatches(newContents, DispatchMatcher).length === 0) {
-      const injectionLine = findMatches(newContents, functionMatcher(fileName))[0]
-      const tempContents = newContents.split('\n')
-      tempContents[injectionLine] = tempContents[injectionLine] + '\n  const dispatch = useDispatch()'
-      newContents = tempContents.join('\n')
-    }
+  if (opts.action) {
+    if (actionInjections.length > 0) {
+      if (findMatches(newContents, DispatchMatcher).length === 0) {
+        const injectionLine = findMatches(newContents, functionMatcher(fileName))[0]
+        const tempContents = newContents.split('\n')
+        tempContents[injectionLine] = tempContents[injectionLine] + '\n  const dispatch = useDispatch()'
+        newContents = tempContents.join('\n')
+      }
 
-    if (findMatches(newContents, actionMatcher(actionInjections)).length > 0) {
-      newContents = newContents.replace(actionMatcher(actionInjections), `import { ${actionInjections.join(', ')} } from 'redux/slice/${slice}'`)
-    } else {
-      const tempContents = newContents.split('\n')
-      tempContents[0] = tempContents[0] + `\nimport { ${actionInjections.join(', ')} } from 'redux/slice/${slice}'`
-      newContents = tempContents.join('\n')
-    }
+      if (findMatches(newContents, actionMatcher(actionInjections)).length > 0) {
+        newContents = newContents.replace(actionMatcher(actionInjections), `import { ${actionInjections.join(', ')} } from 'redux/slice/${slice}'`)
+      } else {
+        const tempContents = newContents.split('\n')
+        tempContents[0] = tempContents[0] + `\nimport { ${actionInjections.join(', ')} } from 'redux/slice/${slice}'`
+        newContents = tempContents.join('\n')
+      }
 
-    Log(`    ✅  ${actionInjections.length} action${actionInjections.length > 1 ? 's were' : ' was'} injected into the component`.green)
+      Log(`    ✅  ${actionInjections.length} action${actionInjections.length > 1 ? 's were' : ' was'} injected into the component`.green)
+    }
   }
 
   if (exists(filePath) === 'dir') {

@@ -1,10 +1,14 @@
 # 🛠️ CHANGELOG
 
+## v1.2.0
+
+- Added `--no-state` and `--no-action` flags for the `inject` command.
+
 ## v1.1.3
 
 - Made sure single variable injections work properly
 
-- Made sure that injection mapping properly identifies between a single variables, an array and an object
+- Made sure that injection mapping properly identifies between a single variable, an array and an object
 
 ## v1.1.2
 

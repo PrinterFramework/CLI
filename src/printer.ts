@@ -14,8 +14,10 @@ import { inject } from './generators/inject'
 export const Printer = new Command('🖨️ Printer')
 
 Printer
-  .version('1.1.3')
+  .version('1.2.0')
   .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.')
+  .option('-a, --no-action', 'do not inject actions', false)
+  .option('-s, --no-state', 'do not inject state', false)
 
 Printer
   .command('new [path]')
@@ -50,7 +52,7 @@ Printer
   .action(async (slice, component) => {
     registerConfig()
     Log(`💉  Injecting ${slice} into ${component}`.green)
-    await inject(slice, component)
+    await inject(slice, component, Printer.opts())
   })
 
 Printer

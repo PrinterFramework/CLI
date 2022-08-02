@@ -53,8 +53,10 @@ var crud_1 = require("./generators/crud");
 var inject_1 = require("./generators/inject");
 exports.Printer = new commander_1.Command('🖨️ Printer');
 exports.Printer
-    .version('1.1.3')
-    .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.');
+    .version('1.2.0')
+    .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.')
+    .option('-a, --no-action', 'do not inject actions', false)
+    .option('-s, --no-state', 'do not inject state', false);
 exports.Printer
     .command('new [path]')
     .description('Generate a new Printer project')
@@ -112,7 +114,7 @@ exports.Printer
             case 0:
                 (0, config_1.registerConfig)();
                 (0, log_1.Log)("\uD83D\uDC89  Injecting ".concat(slice, " into ").concat(component).green);
-                return [4 /*yield*/, (0, inject_1.inject)(slice, component)];
+                return [4 /*yield*/, (0, inject_1.inject)(slice, component, exports.Printer.opts())];
             case 1:
                 _a.sent();
                 return [2 /*return*/];

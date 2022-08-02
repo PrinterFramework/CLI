@@ -41,10 +41,11 @@ var path_1 = require("path");
 var fs_jetpack_1 = require("fs-jetpack");
 var log_1 = require("../helpers/log");
 var match_1 = require("../helpers/match");
-function inject(slice, component) {
+function inject(slice, component, opts) {
     return __awaiter(this, void 0, void 0, function () {
         var filePath, pathArray, fileName, fileContents, fileComponentPath, slicePath, sliceContents, matches, splitFile, sliceMatch, newContents, stateInjections, actionInjections, i, index, match, decorator, typeMap, varKey, addDots, varKey, hasExistingImport, i, stateInjection, typeName, i, stateInjection, injectionLine, tempContents, typeMap, value, spreadLeft, spreadRight, typeName, injectionLine, tempContents, tempContents, fileComponentPath;
         return __generator(this, function (_a) {
+            console.log(opts);
             filePath = (0, path_1.join)(process.cwd(), component);
             pathArray = component.split('/');
             fileName = pathArray[pathArray.length - 1];
@@ -93,61 +94,65 @@ function inject(slice, component) {
             else {
                 newContents = "import { useSelector, useDispatch } from 'react-redux'\n\n".concat(newContents);
             }
-            for (i = 0; i < stateInjections.length; i++) {
-                stateInjection = stateInjections[i];
-                if (stateInjection.type) {
-                    typeName = "".concat(stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1), "Type");
-                    if (typeName.indexOf('[]') !== -1) {
-                        typeName = typeName.replaceAll('[]', '');
-                    }
-                    if ((0, match_1.findMatches)(newContents, (0, match_1.typeMatcher)(typeName)).length === 0) {
-                        newContents = "import ".concat(typeName, " from 'types/").concat(stateInjection.type.replaceAll('[]', ''), "'\n").concat(newContents);
-                    }
-                }
-            }
-            for (i = 0; i < stateInjections.length; i++) {
-                stateInjection = stateInjections[i];
-                if ((0, match_1.findMatches)(newContents, (0, match_1.selectorMatcher)(stateInjection.value)).length === 0) {
-                    injectionLine = (0, match_1.findMatches)(newContents, (0, match_1.functionMatcher)(fileName))[0];
-                    tempContents = newContents.split('\n');
-                    typeMap = 'any';
-                    value = stateInjection.value;
-                    spreadLeft = '{';
-                    spreadRight = '}';
+            if (opts.state) {
+                for (i = 0; i < stateInjections.length; i++) {
+                    stateInjection = stateInjections[i];
                     if (stateInjection.type) {
-                        typeName = stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1) + 'Type';
+                        typeName = "".concat(stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1), "Type");
                         if (typeName.indexOf('[]') !== -1) {
-                            typeName = typeName.replaceAll('[]', '') + '[]';
-                            value = value.replaceAll('[]', '');
-                            spreadLeft = '[';
-                            spreadRight = ']';
+                            typeName = typeName.replaceAll('[]', '');
                         }
-                        typeMap = "{ ".concat(slice, ": { ").concat(value, ": ").concat(typeName, " } }");
+                        if ((0, match_1.findMatches)(newContents, (0, match_1.typeMatcher)(typeName)).length === 0) {
+                            newContents = "import ".concat(typeName, " from 'types/").concat(stateInjection.type.replaceAll('[]', ''), "'\n").concat(newContents);
+                        }
                     }
-                    tempContents[injectionLine] = tempContents[injectionLine] + "\n  const ".concat(value, " = useSelector((state: ").concat(typeMap, ") => ").concat(stateInjection.addDots ? '(' + spreadLeft + ' ' : '').concat(stateInjection.addDots ? '...' : '', "state.").concat(slice, ".").concat(value).concat(stateInjection.addDots ? ' ' + spreadRight + ')' : '', ")");
-                    if (i === 0) {
-                        tempContents[injectionLine] = tempContents[injectionLine] + '\n';
-                    }
-                    newContents = tempContents.join('\n');
                 }
-                (0, log_1.Log)("    \u2705  State '".concat(stateInjection.value, "' was injected into the component ").concat(stateInjection.type ? "with the type ".concat(stateInjection.type) : '').green);
+                for (i = 0; i < stateInjections.length; i++) {
+                    stateInjection = stateInjections[i];
+                    if ((0, match_1.findMatches)(newContents, (0, match_1.selectorMatcher)(stateInjection.value)).length === 0) {
+                        injectionLine = (0, match_1.findMatches)(newContents, (0, match_1.functionMatcher)(fileName))[0];
+                        tempContents = newContents.split('\n');
+                        typeMap = 'any';
+                        value = stateInjection.value;
+                        spreadLeft = '{';
+                        spreadRight = '}';
+                        if (stateInjection.type) {
+                            typeName = stateInjection.type[0].toUpperCase() + stateInjection.type.substring(1) + 'Type';
+                            if (typeName.indexOf('[]') !== -1) {
+                                typeName = typeName.replaceAll('[]', '') + '[]';
+                                value = value.replaceAll('[]', '');
+                                spreadLeft = '[';
+                                spreadRight = ']';
+                            }
+                            typeMap = "{ ".concat(slice, ": { ").concat(value, ": ").concat(typeName, " } }");
+                        }
+                        tempContents[injectionLine] = tempContents[injectionLine] + "\n  const ".concat(value, " = useSelector((state: ").concat(typeMap, ") => ").concat(stateInjection.addDots ? '(' + spreadLeft + ' ' : '').concat(stateInjection.addDots ? '...' : '', "state.").concat(slice, ".").concat(value).concat(stateInjection.addDots ? ' ' + spreadRight + ')' : '', ")");
+                        if (i === 0) {
+                            tempContents[injectionLine] = tempContents[injectionLine] + '\n';
+                        }
+                        newContents = tempContents.join('\n');
+                    }
+                    (0, log_1.Log)("    \u2705  State '".concat(stateInjection.value, "' was injected into the component ").concat(stateInjection.type ? "with the type ".concat(stateInjection.type) : '').green);
+                }
             }
-            if (actionInjections.length > 0) {
-                if ((0, match_1.findMatches)(newContents, match_1.DispatchMatcher).length === 0) {
-                    injectionLine = (0, match_1.findMatches)(newContents, (0, match_1.functionMatcher)(fileName))[0];
-                    tempContents = newContents.split('\n');
-                    tempContents[injectionLine] = tempContents[injectionLine] + '\n  const dispatch = useDispatch()';
-                    newContents = tempContents.join('\n');
+            if (opts.action) {
+                if (actionInjections.length > 0) {
+                    if ((0, match_1.findMatches)(newContents, match_1.DispatchMatcher).length === 0) {
+                        injectionLine = (0, match_1.findMatches)(newContents, (0, match_1.functionMatcher)(fileName))[0];
+                        tempContents = newContents.split('\n');
+                        tempContents[injectionLine] = tempContents[injectionLine] + '\n  const dispatch = useDispatch()';
+                        newContents = tempContents.join('\n');
+                    }
+                    if ((0, match_1.findMatches)(newContents, (0, match_1.actionMatcher)(actionInjections)).length > 0) {
+                        newContents = newContents.replace((0, match_1.actionMatcher)(actionInjections), "import { ".concat(actionInjections.join(', '), " } from 'redux/slice/").concat(slice, "'"));
+                    }
+                    else {
+                        tempContents = newContents.split('\n');
+                        tempContents[0] = tempContents[0] + "\nimport { ".concat(actionInjections.join(', '), " } from 'redux/slice/").concat(slice, "'");
+                        newContents = tempContents.join('\n');
+                    }
+                    (0, log_1.Log)("    \u2705  ".concat(actionInjections.length, " action").concat(actionInjections.length > 1 ? 's were' : ' was', " injected into the component").green);
                 }
-                if ((0, match_1.findMatches)(newContents, (0, match_1.actionMatcher)(actionInjections)).length > 0) {
-                    newContents = newContents.replace((0, match_1.actionMatcher)(actionInjections), "import { ".concat(actionInjections.join(', '), " } from 'redux/slice/").concat(slice, "'"));
-                }
-                else {
-                    tempContents = newContents.split('\n');
-                    tempContents[0] = tempContents[0] + "\nimport { ".concat(actionInjections.join(', '), " } from 'redux/slice/").concat(slice, "'");
-                    newContents = tempContents.join('\n');
-                }
-                (0, log_1.Log)("    \u2705  ".concat(actionInjections.length, " action").concat(actionInjections.length > 1 ? 's were' : ' was', " injected into the component").green);
             }
             if ((0, fs_jetpack_1.exists)(filePath) === 'dir') {
                 fileComponentPath = (0, path_1.join)(process.cwd(), component, "".concat(fileName, ".component.tsx"));
