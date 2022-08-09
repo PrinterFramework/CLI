@@ -13,8 +13,7 @@ export async function generateNewProject (path: string = '.') {
   const gitkeepPublicPath = join(process.cwd(), path, 'public', '.gitkeep')
   const indexPath = join(process.cwd(), path, 'pages', 'index.tsx')
   const utilSessionPath = join(process.cwd(), path, 'util', 'session.ts')
-  const resetCssPath = join(process.cwd(), path, 'public', 'assets', 'css', 'reset.css')
-  const fontsCssPath = join(process.cwd(), path, 'public', 'assets', 'css', 'fonts.css')
+  const resetCssPath = join(process.cwd(), path, 'public', 'assets', 'scss', 'reset.scss')
   const printerCssPath = join(process.cwd(), path, 'public', 'assets', 'css', 'printer.css')
   const printerScssPath = join(process.cwd(), path, 'public', 'assets', 'scss', 'printer.scss')
   const prismaClientPath = join(process.cwd(), path, 'prisma', 'client.ts')
@@ -80,13 +79,8 @@ export async function generateNewProject (path: string = '.') {
   )
   Log('    ✅  Created public/assets/css/reset.css'.green)
   write(
-    fontsCssPath,
-    ''
-  )
-  Log('    ✅  Created public/assets/css/fonts.css'.green)
-  write(
     printerCssPath,
-    read(join(__dirname, '..', 'templates', 'new', 'printer.template')) || ''
+    ''
   )
   Log('    ✅  Created public/assets/css/printer.css'.green)
   write(

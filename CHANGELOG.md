@@ -1,5 +1,15 @@
 # 🛠️ CHANGELOG
 
+## v1.2.1
+
+- Added `sass` to dependencies
+
+- Removed `fonts.css` (redundant)
+
+- Moved `css/reset.css` to `scss/reset.scss`
+
+- Updated `printer.scss` structure
+
 ## v1.2.0
 
 - Added `--no-state` and `--no-action` flags for the `inject` command.
