@@ -1,5 +1,23 @@
 # 🛠️ CHANGELOG
 
+## v1.3.0
+
+- Added the `scss` command
+
+- Improved `public/assets/scss` structure and moved files to `/scss`
+
+- Added the `prisma` command
+
+- Added the `superagent` command
+
+- Restructured base project structure
+
+- Component, Pages and Injections now support `.tsx` suffixes
+
+- Added a `README.md` file with command list and documentation reference
+
+- Updated `package.json` dependencies
+
 ## v1.2.1
 
 - Added `sass` to dependencies

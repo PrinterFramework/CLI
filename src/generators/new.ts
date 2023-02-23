@@ -5,17 +5,20 @@ import { Log } from '../helpers/log'
 import { randomBytes } from 'crypto'
 
 export async function generateNewProject (path: string = '.') {
+  const readmePath = join(process.cwd(), path, 'README.md')
   const appPath = join(process.cwd(), path, 'pages', '_app.tsx')
   const documentPath = join(process.cwd(), path, 'pages', '_document.tsx')
   const babelPath = join(process.cwd(), path, '.babelrc')
   const gitignorePath = join(process.cwd(), path, '.gitignore')
   const gitkeepPath = join(process.cwd(), path, '.gitkeep')
+  const envdevPath = join(process.cwd(), path, '.env.dev')
   const gitkeepPublicPath = join(process.cwd(), path, 'public', '.gitkeep')
   const indexPath = join(process.cwd(), path, 'pages', 'index.tsx')
   const utilSessionPath = join(process.cwd(), path, 'util', 'session.ts')
-  const resetCssPath = join(process.cwd(), path, 'public', 'assets', 'scss', 'reset.scss')
-  const printerCssPath = join(process.cwd(), path, 'public', 'assets', 'css', 'printer.css')
-  const printerScssPath = join(process.cwd(), path, 'public', 'assets', 'scss', 'printer.scss')
+  const resetCssPath = join(process.cwd(), path, 'scss', 'reset.scss')
+  const printerScssPath = join(process.cwd(), path, 'scss', 'printer.scss')
+  const themeScssPath = join(process.cwd(), path, 'scss', 'theme.scss')
+  const uiScssPath = join(process.cwd(), path, 'scss', 'ui.scss')
   const prismaClientPath = join(process.cwd(), path, 'prisma', 'client.ts')
   const prismaSchemaPath = join(process.cwd(), path, 'prisma', 'schema.prisma')
   const packagePath = join(process.cwd(), path, 'package.json')
@@ -40,6 +43,11 @@ export async function generateNewProject (path: string = '.') {
   }
 
   write(
+    readmePath,
+    read(join(__dirname, '..', 'templates', 'new', 'readme.template')) || ''
+  )
+  Log('    ✅  Created README.md'.green)
+  write(
     babelPath,
     read(join(__dirname, '..', 'templates', 'new', 'babelrc.template')) || ''
   )
@@ -51,6 +59,8 @@ export async function generateNewProject (path: string = '.') {
   Log('    ✅  Created .gitignore'.green)
   write(gitkeepPath, '')
   Log('    ✅  Created .gitkeep'.green)
+  write(envdevPath, read(join(__dirname, '..', 'templates', 'new', 'env.dev.template')) || '')
+  Log('    ✅  Created .env.dev'.green)
   write(gitkeepPublicPath, '')
   Log('    ✅  Created public/.gitkeep'.green)
   write(
@@ -77,17 +87,22 @@ export async function generateNewProject (path: string = '.') {
     resetCssPath,
     read(join(__dirname, '..', 'templates', 'new', 'reset.template')) || ''
   )
-  Log('    ✅  Created public/assets/css/reset.css'.green)
-  write(
-    printerCssPath,
-    ''
-  )
-  Log('    ✅  Created public/assets/css/printer.css'.green)
+  Log('    ✅  Created scss/reset.css'.green)
   write(
     printerScssPath,
     read(join(__dirname, '..', 'templates', 'new', 'printer.template')) || ''
   )
-  Log('    ✅  Created public/assets/scss/printer.scss'.green)
+  Log('    ✅  Created scss/printer.scss'.green)
+  write(
+    themeScssPath,
+    read(join(__dirname, '..', 'templates', 'new', 'theme.template')) || ''
+  )
+  Log('    ✅  Created scss/theme.scss'.green)
+  write(
+    uiScssPath,
+    read(join(__dirname, '..', 'templates', 'new', 'ui.template')) || ''
+  )
+  Log('    ✅  Created scss/ui.scss'.green)
   write(
     prismaClientPath,
     read(join(__dirname, '..', 'templates', 'new', 'prisma.client.template')) || ''

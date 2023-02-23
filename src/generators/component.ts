@@ -5,7 +5,7 @@ import { Log } from '../helpers/log'
 import { Config } from '../config'
 
 export async function generateComponent (path: string) {
-  if (exists(join(process.cwd(), path)) || exists(join(process.cwd(), `${path}.tsx`))) {
+  if (exists(join(process.cwd(), path)) || exists(join(process.cwd(), `${path.replace('.tsx', '')}.tsx`))) {
     const result = await prompts({
       type: 'confirm',
       name: 'overwrite',
@@ -17,7 +17,7 @@ export async function generateComponent (path: string) {
     }
   }
 
-  const pathArray = path.split('/')
+  const pathArray = path.replace('.tsx', '').split('/')
   const fileName = pathArray[pathArray.length - 1]
   let name = fileName.replace(/[^\w\s]/gi, '')
 
@@ -66,9 +66,9 @@ export async function generateComponent (path: string) {
     }
   } else {
     const component = read(join(__dirname, '..', 'templates', 'component', 'component.nostyle.template'))?.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path)
-    const componentPath = join(process.cwd(), `${path}.tsx`)
+    const componentPath = join(process.cwd(), `${path.replace('.tsx', '')}.tsx`)
 
     write(componentPath, component || '')
-    Log(`    ✅  Created ${path}.tsx`.green)
+    Log(`    ✅  Created ${path.replace('.tsx', '')}.tsx`.green)
   }
 }

@@ -6,6 +6,18 @@ export const DispatchMatcher = /^(?=.*const)(?=.*dispatch)(?=.*useDispatch).*$/g
 export const BraceMatcher = /^(?=.*\[).*$/gmi
 export const BraceMatcher2 = /^(?=.*{).*$/gmi
 
+export function superagentMatcher (type: string) {
+  return new RegExp(`^(?=.*import)(?=.*${type})(?=.*from).*$`, 'gmi')
+}
+
+export function stateMatcher () {
+  return new RegExp('^(?=.*import)(?=.*useState)(?=.*from).*$', 'gmi')
+}
+
+export function effectMatcher () {
+  return new RegExp('^(?=.*import)(?=.*useEffect)(?=.*from).*$', 'gmi')
+}
+
 export function functionMatcher (name: string) {
   return new RegExp(`^(?=.*function)(?=.*${name}).*$`, 'gmi')
 }

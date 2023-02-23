@@ -9,18 +9,20 @@ export interface OptsType {
 }
 
 export async function inject (slice: string, component: string, opts: OptsType) {
-  console.log(opts)
-
   const filePath = join(process.cwd(), component)
   const pathArray = component.split('/')
   const fileName = pathArray[pathArray.length - 1]
   let fileContents = ''
 
-  if (exists(filePath) === 'dir') {
-    const fileComponentPath = join(process.cwd(), component, `${fileName}.component.tsx`)
-    fileContents = read(fileComponentPath) || ''
+  if (filePath.indexOf('.tsx') === -1) {
+    if (exists(filePath) === 'dir') {
+      const fileComponentPath = join(process.cwd(), component, `${fileName}.component.tsx`)
+      fileContents = read(fileComponentPath) || ''
+    } else {
+      fileContents = read(`${filePath}.tsx`) || ''
+    }
   } else {
-    fileContents = read(`${filePath}.tsx`) || ''
+    fileContents = read(`${filePath}`) || ''
   }
 
   const slicePath = join(process.cwd(), 'redux', 'slice', `${slice}.tsx`)

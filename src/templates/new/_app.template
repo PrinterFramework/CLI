@@ -1,6 +1,7 @@
-import 'public/assets/scss/printer.scss'
+import 'scss/printer.scss'
 import App, { AppContext, AppInitialProps } from 'next/app'
 import { wrapper } from 'redux/wrapper'
+import Head from 'next/head'
 
 export class AppComponent extends App<AppInitialProps> {
   public static getInitialProps = async ({ Component, ctx }: AppContext) => {
@@ -16,7 +17,14 @@ export class AppComponent extends App<AppInitialProps> {
 
   public render() {
     const { Component, pageProps } = this.props
-    return <Component {...pageProps} />
+    return (
+      <>
+        <Head>
+          <title>Printer</title>
+        </Head>
+        <Component {...pageProps} />
+      </>
+    )
   }
 }
 

@@ -39,61 +39,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generatePage = void 0;
+exports.generateScss = void 0;
 var prompts_1 = __importDefault(require("prompts"));
 var path_1 = require("path");
 var fs_jetpack_1 = require("fs-jetpack");
 var log_1 = require("../helpers/log");
-function generatePage(path) {
-    var _a, _b;
+function generateScss(path) {
     return __awaiter(this, void 0, void 0, function () {
-        var pagePath, result, pathArray, fileName, urls, name, pageTemplate;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var scssPath, result, scssTemplate, printerPath, printerFile;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    pagePath = (0, path_1.join)(process.cwd(), 'pages', "".concat(path.replace('.tsx', ''), ".tsx"));
-                    if (!((0, fs_jetpack_1.exists)(pagePath) !== false)) return [3 /*break*/, 2];
+                    scssPath = (0, path_1.join)(process.cwd(), 'scss', "".concat(path, ".scss"));
+                    if (!((0, fs_jetpack_1.exists)(scssPath) !== false)) return [3 /*break*/, 2];
                     return [4 /*yield*/, (0, prompts_1.default)({
                             type: 'confirm',
                             name: 'overwrite',
-                            message: 'This page already exists, overwrite it?'
+                            message: 'This scss file already exists, overwrite it?'
                         })];
                 case 1:
-                    result = _c.sent();
+                    result = _a.sent();
                     if (result.overwrite === false) {
                         return [2 /*return*/];
                     }
-                    _c.label = 2;
+                    _a.label = 2;
                 case 2:
-                    pathArray = path.replace('.tsx', '').split('/');
-                    fileName = pathArray[pathArray.length - 1];
-                    urls = [];
-                    name = fileName.replace(/[^\w\s]/gi, '');
-                    pageTemplate = '';
-                    if (path.match(/\[(.*?)\]/g)) {
-                        urls = path.match(/\[(.*?)\]/g);
-                        urls = urls.map(function (url) { return url.replace(/\[/g, '').replace(/\]/g, ''); });
-                        name = name[0].toUpperCase() + name.substring(1);
-                        pageTemplate = ((_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'page.url.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{name}}', name).replaceAll('{{url}}', urls.join(', '))) || '';
-                    }
-                    else {
-                        if (fileName.indexOf('.') !== -1) {
-                            name = fileName.split('.').map(function (word) { return word[0].toUpperCase() + word.substring(1); }).join('');
-                        }
-                        else if (fileName.indexOf('-') !== -1) {
-                            name = fileName.split('-').map(function (word) { return word[0].toUpperCase() + word.substring(1); }).join('');
-                        }
-                        else {
-                            name = name[0].toUpperCase() + name.substring(1);
-                        }
-                        pageTemplate = ((_b = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'page.template'))) === null || _b === void 0 ? void 0 : _b.replaceAll('{{name}}', name)) || '';
-                    }
-                    (0, fs_jetpack_1.write)(pagePath, pageTemplate);
-                    (0, log_1.Log)("    \u2705  Created pages/".concat(path, ".tsx").green);
+                    scssTemplate = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'scss.template')) || '';
+                    (0, fs_jetpack_1.write)(scssPath, scssTemplate);
+                    (0, log_1.Log)("    \u2705  Created scss/".concat(path, ".scss").green);
+                    printerPath = (0, path_1.join)(process.cwd(), 'scss', 'printer.scss');
+                    printerFile = (0, fs_jetpack_1.read)(printerPath);
+                    printerFile += "\n@import \"/scss/".concat(path, ".scss\";");
+                    (0, fs_jetpack_1.write)(printerPath, printerFile || '');
+                    (0, log_1.Log)('    ✅  Updated scss/printer.scss'.green);
                     return [2 /*return*/];
             }
         });
     });
 }
-exports.generatePage = generatePage;
-//# sourceMappingURL=page.js.map
+exports.generateScss = generateScss;
+//# sourceMappingURL=scss.js.map
