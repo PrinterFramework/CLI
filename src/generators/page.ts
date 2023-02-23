@@ -4,7 +4,7 @@ import { exists, read, write } from 'fs-jetpack'
 import { Log } from '../helpers/log'
 
 export async function generatePage (path: string) {
-  const pagePath = join(process.cwd(), 'pages', `${path}.tsx`)
+  const pagePath = join(process.cwd(), 'pages', `${path.replace('.tsx', '')}.tsx`)
 
   if (exists(pagePath) !== false) {
     const result = await prompts({
@@ -18,7 +18,7 @@ export async function generatePage (path: string) {
     }
   }
 
-  const pathArray = path.split('/')
+  const pathArray = path.replace('.tsx', '').split('/')
   const fileName = pathArray[pathArray.length - 1]
   let urls = []
   let name = fileName.replace(/[^\w\s]/gi, '')

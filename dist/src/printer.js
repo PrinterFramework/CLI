@@ -50,10 +50,13 @@ var type_1 = require("./generators/type");
 var page_1 = require("./generators/page");
 var api_1 = require("./generators/api");
 var crud_1 = require("./generators/crud");
+var scss_1 = require("./generators/scss");
 var inject_1 = require("./generators/inject");
+var prisma_1 = require("./generators/prisma");
+var superagent_1 = require("./generators/superagent");
 exports.Printer = new commander_1.Command('🖨️ Printer');
 exports.Printer
-    .version('1.2.1')
+    .version('1.3.0')
     .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.')
     .option('-a, --no-action', 'do not inject actions', false)
     .option('-s, --no-state', 'do not inject state', false);
@@ -163,6 +166,54 @@ exports.Printer
                 (0, config_1.registerConfig)();
                 (0, log_1.Log)('👷  Generating new Printer API route'.green);
                 return [4 /*yield*/, (0, api_1.generateApi)(path)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.Printer
+    .command('scss <path>')
+    .description('Generate a new Printer SCSS file')
+    .action(function (path) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                (0, config_1.registerConfig)();
+                (0, log_1.Log)('👷  Generating new Printer SCSS file'.green);
+                return [4 /*yield*/, (0, scss_1.generateScss)(path)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.Printer
+    .command('superagent <type> <path>')
+    .description('Generate a new Superagent request flow')
+    .action(function (type, path) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                (0, config_1.registerConfig)();
+                (0, log_1.Log)('👷  Generating new Superagent request flow for'.green, path);
+                return [4 /*yield*/, (0, superagent_1.injectSupergent)(String(type).toUpperCase(), path)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.Printer
+    .command('prisma')
+    .description('Generate dynamic prisma types based on prisma/schema.prisma')
+    .action(function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                (0, config_1.registerConfig)();
+                (0, log_1.Log)('👷  Generating prisma types'.green);
+                return [4 /*yield*/, (0, prisma_1.generatePrismaTypes)()];
             case 1:
                 _a.sent();
                 return [2 /*return*/];

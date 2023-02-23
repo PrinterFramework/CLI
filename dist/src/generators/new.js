@@ -49,21 +49,24 @@ function generateNewProject(path) {
     var _a;
     if (path === void 0) { path = '.'; }
     return __awaiter(this, void 0, void 0, function () {
-        var appPath, documentPath, babelPath, gitignorePath, gitkeepPath, gitkeepPublicPath, indexPath, utilSessionPath, resetCssPath, printerCssPath, printerScssPath, prismaClientPath, prismaSchemaPath, packagePath, wrapperPath, reducerPath, reducersPath, tsconfigPath, precommitPath, eslintrcPath, printerConfigPath, result;
+        var readmePath, appPath, documentPath, babelPath, gitignorePath, gitkeepPath, envdevPath, gitkeepPublicPath, indexPath, utilSessionPath, resetCssPath, printerScssPath, themeScssPath, uiScssPath, prismaClientPath, prismaSchemaPath, packagePath, wrapperPath, reducerPath, reducersPath, tsconfigPath, precommitPath, eslintrcPath, printerConfigPath, result;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    readmePath = (0, path_1.join)(process.cwd(), path, 'README.md');
                     appPath = (0, path_1.join)(process.cwd(), path, 'pages', '_app.tsx');
                     documentPath = (0, path_1.join)(process.cwd(), path, 'pages', '_document.tsx');
                     babelPath = (0, path_1.join)(process.cwd(), path, '.babelrc');
                     gitignorePath = (0, path_1.join)(process.cwd(), path, '.gitignore');
                     gitkeepPath = (0, path_1.join)(process.cwd(), path, '.gitkeep');
+                    envdevPath = (0, path_1.join)(process.cwd(), path, '.env.dev');
                     gitkeepPublicPath = (0, path_1.join)(process.cwd(), path, 'public', '.gitkeep');
                     indexPath = (0, path_1.join)(process.cwd(), path, 'pages', 'index.tsx');
                     utilSessionPath = (0, path_1.join)(process.cwd(), path, 'util', 'session.ts');
-                    resetCssPath = (0, path_1.join)(process.cwd(), path, 'public', 'assets', 'scss', 'reset.scss');
-                    printerCssPath = (0, path_1.join)(process.cwd(), path, 'public', 'assets', 'css', 'printer.css');
-                    printerScssPath = (0, path_1.join)(process.cwd(), path, 'public', 'assets', 'scss', 'printer.scss');
+                    resetCssPath = (0, path_1.join)(process.cwd(), path, 'scss', 'reset.scss');
+                    printerScssPath = (0, path_1.join)(process.cwd(), path, 'scss', 'printer.scss');
+                    themeScssPath = (0, path_1.join)(process.cwd(), path, 'scss', 'theme.scss');
+                    uiScssPath = (0, path_1.join)(process.cwd(), path, 'scss', 'ui.scss');
                     prismaClientPath = (0, path_1.join)(process.cwd(), path, 'prisma', 'client.ts');
                     prismaSchemaPath = (0, path_1.join)(process.cwd(), path, 'prisma', 'schema.prisma');
                     packagePath = (0, path_1.join)(process.cwd(), path, 'package.json');
@@ -87,12 +90,16 @@ function generateNewProject(path) {
                     }
                     _b.label = 2;
                 case 2:
+                    (0, fs_jetpack_1.write)(readmePath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'readme.template')) || '');
+                    (0, log_1.Log)('    ✅  Created README.md'.green);
                     (0, fs_jetpack_1.write)(babelPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'babelrc.template')) || '');
                     (0, log_1.Log)('    ✅  Created .babelrc'.green);
                     (0, fs_jetpack_1.write)(gitignorePath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'gitignore.template')) || '');
                     (0, log_1.Log)('    ✅  Created .gitignore'.green);
                     (0, fs_jetpack_1.write)(gitkeepPath, '');
                     (0, log_1.Log)('    ✅  Created .gitkeep'.green);
+                    (0, fs_jetpack_1.write)(envdevPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'env.dev.template')) || '');
+                    (0, log_1.Log)('    ✅  Created .env.dev'.green);
                     (0, fs_jetpack_1.write)(gitkeepPublicPath, '');
                     (0, log_1.Log)('    ✅  Created public/.gitkeep'.green);
                     (0, fs_jetpack_1.write)(appPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', '_app.template')) || '');
@@ -104,11 +111,13 @@ function generateNewProject(path) {
                     (0, fs_jetpack_1.write)(utilSessionPath, ((_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'session.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{password}}', (0, crypto_1.randomBytes)(32).toString('hex'))) || '');
                     (0, log_1.Log)('    ✅  Created util/session.ts'.green);
                     (0, fs_jetpack_1.write)(resetCssPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'reset.template')) || '');
-                    (0, log_1.Log)('    ✅  Created public/assets/css/reset.css'.green);
-                    (0, fs_jetpack_1.write)(printerCssPath, '');
-                    (0, log_1.Log)('    ✅  Created public/assets/css/printer.css'.green);
+                    (0, log_1.Log)('    ✅  Created scss/reset.css'.green);
                     (0, fs_jetpack_1.write)(printerScssPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'printer.template')) || '');
-                    (0, log_1.Log)('    ✅  Created public/assets/scss/printer.scss'.green);
+                    (0, log_1.Log)('    ✅  Created scss/printer.scss'.green);
+                    (0, fs_jetpack_1.write)(themeScssPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'theme.template')) || '');
+                    (0, log_1.Log)('    ✅  Created scss/theme.scss'.green);
+                    (0, fs_jetpack_1.write)(uiScssPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'ui.template')) || '');
+                    (0, log_1.Log)('    ✅  Created scss/ui.scss'.green);
                     (0, fs_jetpack_1.write)(prismaClientPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'prisma.client.template')) || '');
                     (0, log_1.Log)('    ✅  Created prisma/client.ts'.green);
                     (0, fs_jetpack_1.write)(prismaSchemaPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'schema.prisma.template')) || '');

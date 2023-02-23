@@ -52,7 +52,7 @@ function generateComponent(path) {
         return __generator(this, function (_m) {
             switch (_m.label) {
                 case 0:
-                    if (!((0, fs_jetpack_1.exists)((0, path_1.join)(process.cwd(), path)) || (0, fs_jetpack_1.exists)((0, path_1.join)(process.cwd(), "".concat(path, ".tsx"))))) return [3 /*break*/, 2];
+                    if (!((0, fs_jetpack_1.exists)((0, path_1.join)(process.cwd(), path)) || (0, fs_jetpack_1.exists)((0, path_1.join)(process.cwd(), "".concat(path.replace('.tsx', ''), ".tsx"))))) return [3 /*break*/, 2];
                     return [4 /*yield*/, (0, prompts_1.default)({
                             type: 'confirm',
                             name: 'overwrite',
@@ -65,7 +65,7 @@ function generateComponent(path) {
                     }
                     _m.label = 2;
                 case 2:
-                    pathArray = path.split('/');
+                    pathArray = path.replace('.tsx', '').split('/');
                     fileName = pathArray[pathArray.length - 1];
                     name = fileName.replace(/[^\w\s]/gi, '');
                     if (fileName.indexOf('.') !== -1) {
@@ -107,9 +107,9 @@ function generateComponent(path) {
                     }
                     else {
                         component = (_l = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'component', 'component.nostyle.template'))) === null || _l === void 0 ? void 0 : _l.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path);
-                        componentPath = (0, path_1.join)(process.cwd(), "".concat(path, ".tsx"));
+                        componentPath = (0, path_1.join)(process.cwd(), "".concat(path.replace('.tsx', ''), ".tsx"));
                         (0, fs_jetpack_1.write)(componentPath, component || '');
-                        (0, log_1.Log)("    \u2705  Created ".concat(path, ".tsx").green);
+                        (0, log_1.Log)("    \u2705  Created ".concat(path.replace('.tsx', ''), ".tsx").green);
                     }
                     return [2 /*return*/];
             }

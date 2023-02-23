@@ -2,13 +2,14 @@
     "name": "print-template",
     "version": "1.0.0",
     "scripts": {
+        "prepare": "husky install",
         "dev": "next dev --port 4200",
         "build": "next build",
         "start": "next start",
-        "prepare": "husky install",
         "lint": "eslint . --ext ts,tsx --resolve-plugins-relative-to .",
-        "scss": "node-sass --output-style compact -r public/assets/scss/printer.scss -o public/assets/css",
-        "prisma": "npx prisma generate && npx prisma db push"
+        "scss": "node-sass -r scss/printer.scss -o scss/debug",
+        "prisma": "npx prisma generate",
+        "prisma:update": "npx prisma generate && npx prisma db push"
     },
     "dependencies": {
         "@prisma/client": "^4.1.0",
@@ -21,10 +22,12 @@
         "react-dom": "^17.0.2",
         "react-redux": "^7.2.6",
         "sass": "^1.54.3",
-        "styled-components": "^5.3.3"
+        "styled-components": "^5.3.3",
+        "superagent": "^8.0.9"
     },
     "devDependencies": {
         "@types/node": "^17.0.13",
+        "@types/superagent": "^4.1.16",
         "@typescript-eslint/eslint-plugin": "^5.14.0",
         "@typescript-eslint/parser": "^5.14.0",
         "babel-plugin-styled-components": "^2.0.2",

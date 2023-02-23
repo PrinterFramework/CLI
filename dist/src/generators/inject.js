@@ -45,17 +45,21 @@ function inject(slice, component, opts) {
     return __awaiter(this, void 0, void 0, function () {
         var filePath, pathArray, fileName, fileContents, fileComponentPath, slicePath, sliceContents, matches, splitFile, sliceMatch, newContents, stateInjections, actionInjections, i, index, match, decorator, typeMap, varKey, addDots, varKey, hasExistingImport, i, stateInjection, typeName, i, stateInjection, injectionLine, tempContents, typeMap, value, spreadLeft, spreadRight, typeName, injectionLine, tempContents, tempContents, fileComponentPath;
         return __generator(this, function (_a) {
-            console.log(opts);
             filePath = (0, path_1.join)(process.cwd(), component);
             pathArray = component.split('/');
             fileName = pathArray[pathArray.length - 1];
             fileContents = '';
-            if ((0, fs_jetpack_1.exists)(filePath) === 'dir') {
-                fileComponentPath = (0, path_1.join)(process.cwd(), component, "".concat(fileName, ".component.tsx"));
-                fileContents = (0, fs_jetpack_1.read)(fileComponentPath) || '';
+            if (filePath.indexOf('.tsx') === -1) {
+                if ((0, fs_jetpack_1.exists)(filePath) === 'dir') {
+                    fileComponentPath = (0, path_1.join)(process.cwd(), component, "".concat(fileName, ".component.tsx"));
+                    fileContents = (0, fs_jetpack_1.read)(fileComponentPath) || '';
+                }
+                else {
+                    fileContents = (0, fs_jetpack_1.read)("".concat(filePath, ".tsx")) || '';
+                }
             }
             else {
-                fileContents = (0, fs_jetpack_1.read)("".concat(filePath, ".tsx")) || '';
+                fileContents = (0, fs_jetpack_1.read)("".concat(filePath)) || '';
             }
             slicePath = (0, path_1.join)(process.cwd(), 'redux', 'slice', "".concat(slice, ".tsx"));
             sliceContents = (0, fs_jetpack_1.read)(slicePath) || '';

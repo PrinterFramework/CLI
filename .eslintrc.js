@@ -15,6 +15,7 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
-    'no-tabs': 0
+    'no-tabs': 0,
+    'prefer-regex-literals': 0
   }
 }

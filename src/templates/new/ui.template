@@ -1,0 +1,41 @@
+@import "/scss/theme.scss";
+
+* {
+    transition: all 0.25s cubic-bezier(0.33, 1, 0.68, 1);
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $headerFont;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+h3 {
+    font-size: 18px;
+}
+
+h4 {
+    font-size: 16px;
+}
+
+a {
+    cursor: pointer;
+}
+
+button, input, textarea {
+    font-family: inherit;
+    outline: none;
+}

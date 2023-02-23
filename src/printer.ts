@@ -9,12 +9,15 @@ import { generateType } from './generators/type'
 import { generatePage } from './generators/page'
 import { generateApi } from './generators/api'
 import { generateCrud } from './generators/crud'
+import { generateScss } from './generators/scss'
 import { inject } from './generators/inject'
+import { generatePrismaTypes } from './generators/prisma'
+import { SuperagentTypes, injectSupergent } from './generators/superagent'
 
 export const Printer = new Command('🖨️ Printer')
 
 Printer
-  .version('1.2.1')
+  .version('1.3.0')
   .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.')
   .option('-a, --no-action', 'do not inject actions', false)
   .option('-s, --no-state', 'do not inject state', false)
@@ -80,6 +83,33 @@ Printer
     registerConfig()
     Log('👷  Generating new Printer API route'.green)
     await generateApi(path)
+  })
+
+Printer
+  .command('scss <path>')
+  .description('Generate a new Printer SCSS file')
+  .action(async path => {
+    registerConfig()
+    Log('👷  Generating new Printer SCSS file'.green)
+    await generateScss(path)
+  })
+
+Printer
+  .command('superagent <type> <path>')
+  .description('Generate a new Superagent request flow')
+  .action(async (type, path) => {
+    registerConfig()
+    Log('👷  Generating new Superagent request flow for'.green, path)
+    await injectSupergent(String(type).toUpperCase() as SuperagentTypes, path)
+  })
+
+Printer
+  .command('prisma')
+  .description('Generate dynamic prisma types based on prisma/schema.prisma')
+  .action(async () => {
+    registerConfig()
+    Log('👷  Generating prisma types'.green)
+    await generatePrismaTypes()
   })
 
 Printer
