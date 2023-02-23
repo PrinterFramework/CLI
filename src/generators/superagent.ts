@@ -47,7 +47,7 @@ export async function injectSupergent (type: SuperagentTypes, component: string)
     write(fileComponentPath, newContents)
     Log(`    ✅  Updated ${fileComponentPath}`.green)
   } else {
-    write(`${filePath}`, newContents)
+    write(`${component.replace('.tsx', '')}.tsx`, newContents)
     Log(`    ✅  Updated ${component.replace('.tsx', '')}.tsx`.green)
   }
 }

@@ -1,5 +1,9 @@
 # 🛠️ CHANGELOG
 
+## v1.3.1
+
+- `superagent` command hotfix
+
 ## v1.3.0
 
 - Added the `scss` command

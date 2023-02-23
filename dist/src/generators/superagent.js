@@ -82,7 +82,7 @@ function injectSupergent(type, component) {
                 (0, log_1.Log)("    \u2705  Updated ".concat(fileComponentPath).green);
             }
             else {
-                (0, fs_jetpack_1.write)("".concat(filePath), newContents);
+                (0, fs_jetpack_1.write)("".concat(component.replace('.tsx', ''), ".tsx"), newContents);
                 (0, log_1.Log)("    \u2705  Updated ".concat(component.replace('.tsx', ''), ".tsx").green);
             }
             return [2 /*return*/];
