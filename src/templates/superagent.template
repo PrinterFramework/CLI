@@ -1,20 +1,20 @@
-const [loading, setLoading] = useState(false)
-const [error, setError] = useState(false)
-const [errorMessage, setErrorMessage] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
-async function {{type}}Request() {
-    setLoading(true)
-    setError(false)
-    try {
-        const payload = await {{type}}('/api/url')
-    } catch (error) {
-        console.error(error)
-        setError(true)
-        setErrorMessage('Something went wrong...')
+    async function {{type}}Request() {
+        setLoading(true)
+        setError(false)
+        try {
+            const payload = await {{type}}('/api/url')
+        } catch (error) {
+            console.error(error)
+            setError(true)
+            setErrorMessage('Something went wrong...')
+        }
+        setLoading(false)
     }
-    setLoading(false)
-}
 
-useEffect(() => {
-    {{type}}Request()
-}, [loading])
+    useEffect(() => {
+        {{type}}Request()
+    }, [loading])

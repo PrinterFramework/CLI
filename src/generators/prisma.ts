@@ -90,7 +90,7 @@ export async function generatePrismaTypes () {
       }
 
       const dataMap = formatModel(models)
-      let typeFile = `export interface ${name} {{{injection}}}` + '\n\n' + `export default ${name}` + '\n'
+      let typeFile = `export interface ${name}Type {{{injection}}}` + '\n\n' + `export default ${name}Type` + '\n'
       let typeInject = ''
 
       for (const item of dataMap) {

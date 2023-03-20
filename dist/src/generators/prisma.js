@@ -177,7 +177,7 @@ function generatePrismaTypes() {
                             }
                         }
                         dataMap = formatModel(models);
-                        typeFile = "export interface ".concat(name, " {{{injection}}}") + '\n\n' + "export default ".concat(name) + '\n';
+                        typeFile = "export interface ".concat(name, "Type {{{injection}}}") + '\n\n' + "export default ".concat(name, "Type") + '\n';
                         typeInject = '';
                         try {
                             for (dataMap_1 = (e_5 = void 0, __values(dataMap)), dataMap_1_1 = dataMap_1.next(); !dataMap_1_1.done; dataMap_1_1 = dataMap_1.next()) {

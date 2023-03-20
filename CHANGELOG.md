@@ -1,5 +1,9 @@
 # 🛠️ CHANGELOG
 
+## v1.3.2
+
+- Updates prisma type generation nomenclature (hotfix)
+
 ## v1.3.1
 
 - `superagent` command hotfix
