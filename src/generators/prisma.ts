@@ -3,6 +3,7 @@ import { read, write } from 'fs-jetpack'
 import { Log } from '../helpers/log'
 
 interface ModelType {
+  original: string
   name: string
   type: string
   imported: boolean
@@ -47,7 +48,7 @@ function formatModel (models: ModelType[]): ModelType[] {
     if (newType === 'any' && names.includes(model.name.toUpperCase())) {
       for (const model of models) {
         if (type === model.type.toUpperCase().trim()) {
-          newType = model.name[0].toUpperCase() + model.name.substring(1) + 'Type'
+          newType = (model.type[0].toUpperCase() + model.type.substring(1) + 'Type').replaceAll('[', '').replaceAll(']', '')
           imported = true
         }
       }
@@ -58,6 +59,7 @@ function formatModel (models: ModelType[]): ModelType[] {
       inputType += '[]'
     }
     formattedModels.push({
+      original: model.type,
       name: model.name,
       type: inputType,
       imported
@@ -72,7 +74,7 @@ export function generateImports (models: ModelType[]): string {
   let hasImports = false
   for (const model of models) {
     if (model.imported) {
-      const name = model.name[0].toUpperCase() + model.name.substring(1)
+      const name = (model.original[0].toUpperCase() + model.original.substring(1)).replaceAll('[', '').replaceAll(']', '')
       output += `import ${name}Type from 'types/prisma/${name}'\n`
       hasImports = true
     }
@@ -113,7 +115,7 @@ export async function generatePrismaTypes () {
           const type = (tokenFmt[1] || '').toLowerCase()
 
           if (name && type) {
-            models.push({ name, type, imported: false })
+            models.push({ original: type, name, type, imported: false })
           }
         }
       }

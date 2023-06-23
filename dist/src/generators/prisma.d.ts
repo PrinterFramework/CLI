@@ -1,4 +1,5 @@
 interface ModelType {
+    original: string;
     name: string;
     type: string;
     imported: boolean;

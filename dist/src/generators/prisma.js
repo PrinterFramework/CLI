@@ -121,7 +121,7 @@ function formatModel(models) {
                     for (var models_2 = (e_3 = void 0, __values(models)), models_2_1 = models_2.next(); !models_2_1.done; models_2_1 = models_2.next()) {
                         var model_1 = models_2_1.value;
                         if (type === model_1.type.toUpperCase().trim()) {
-                            newType = model_1.name[0].toUpperCase() + model_1.name.substring(1) + 'Type';
+                            newType = (model_1.type[0].toUpperCase() + model_1.type.substring(1) + 'Type').replaceAll('[', '').replaceAll(']', '');
                             imported = true;
                         }
                     }
@@ -139,6 +139,7 @@ function formatModel(models) {
                 inputType += '[]';
             }
             formattedModels.push({
+                original: model.type,
                 name: model.name,
                 type: inputType,
                 imported: imported
@@ -162,7 +163,7 @@ function generateImports(models) {
         for (var models_3 = __values(models), models_3_1 = models_3.next(); !models_3_1.done; models_3_1 = models_3.next()) {
             var model = models_3_1.value;
             if (model.imported) {
-                var name = model.name[0].toUpperCase() + model.name.substring(1);
+                var name = (model.original[0].toUpperCase() + model.original.substring(1)).replaceAll('[', '').replaceAll(']', '');
                 output += "import ".concat(name, "Type from 'types/prisma/").concat(name, "'\n");
                 hasImports = true;
             }
@@ -212,7 +213,7 @@ function generatePrismaTypes() {
                                     name_1 = (tokenFmt[0] || '');
                                     type = (tokenFmt[1] || '').toLowerCase();
                                     if (name_1 && type) {
-                                        models.push({ name: name_1, type: type, imported: false });
+                                        models.push({ original: type, name: name_1, type: type, imported: false });
                                     }
                                 }
                             }
@@ -226,7 +227,7 @@ function generatePrismaTypes() {
                         }
                         dataMap = formatModel(models);
                         importMap = generateImports(dataMap);
-                        typeFile = "{{imports}}" + "export interface ".concat(name, "Type {{{injection}}}") + '\n\n' + "export default ".concat(name, "Type") + '\n';
+                        typeFile = '{{imports}}' + "export interface ".concat(name, "Type {{{injection}}}") + '\n\n' + "export default ".concat(name, "Type") + '\n';
                         typeInject = '';
                         try {
                             for (dataMap_1 = (e_7 = void 0, __values(dataMap)), dataMap_1_1 = dataMap_1.next(); !dataMap_1_1.done; dataMap_1_1 = dataMap_1.next()) {

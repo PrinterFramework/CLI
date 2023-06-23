@@ -1,5 +1,9 @@
 # 🛠️ CHANGELOG
 
+## v1.3.40
+
+- Hotfix to type inference
+
 ## v1.3.3
 
 - Dynamic type inference for prisma type generators
