@@ -3,6 +3,7 @@ import { join } from 'path'
 import { exists, read, write } from 'fs-jetpack'
 import { Log } from '../helpers/log'
 import { Config } from '../config'
+import { formatName } from '../helpers/nomenclature'
 
 export async function generateComponent (path: string) {
   if (exists(join(process.cwd(), path)) || exists(join(process.cwd(), `${path.replace('.tsx', '')}.tsx`))) {
@@ -19,15 +20,7 @@ export async function generateComponent (path: string) {
 
   const pathArray = path.replace('.tsx', '').split('/')
   const fileName = pathArray[pathArray.length - 1]
-  let name = fileName.replace(/[^\w\s]/gi, '')
-
-  if (fileName.indexOf('.') !== -1) {
-    name = fileName.split('.').map(word => word[0].toUpperCase() + word.substring(1)).join('')
-  } else if (fileName.indexOf('-') !== -1) {
-    name = fileName.split('-').map(word => word[0].toUpperCase() + word.substring(1)).join('')
-  } else {
-    name = name[0].toUpperCase() + name.substring(1)
-  }
+  const name = formatName(fileName)
 
   if (Config.componentFolder === true) {
     let component = read(join(__dirname, '..', 'templates', 'component', 'component.nostyle.template'))?.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path)

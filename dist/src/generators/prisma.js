@@ -72,7 +72,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generatePrismaTypes = void 0;
+exports.generatePrismaTypes = exports.generateImports = void 0;
 var path_1 = require("path");
 var fs_jetpack_1 = require("fs-jetpack");
 var log_1 = require("../helpers/log");
@@ -91,13 +91,15 @@ var typeMatches = [
     }
 ];
 function formatModel(models) {
-    var e_1, _a, e_2, _b;
+    var e_1, _a, e_2, _b, e_3, _c;
     var formattedModels = [];
+    var names = models.map(function (item) { return item.name.toUpperCase(); });
     try {
         for (var models_1 = __values(models), models_1_1 = models_1.next(); !models_1_1.done; models_1_1 = models_1.next()) {
             var model = models_1_1.value;
             var type = model.type.toUpperCase().trim();
             var tm = type.replaceAll('[]', '');
+            var imported = false;
             var newType = 'any';
             try {
                 for (var typeMatches_1 = (e_2 = void 0, __values(typeMatches)), typeMatches_1_1 = typeMatches_1.next(); !typeMatches_1_1.done; typeMatches_1_1 = typeMatches_1.next()) {
@@ -114,13 +116,32 @@ function formatModel(models) {
                 }
                 finally { if (e_2) throw e_2.error; }
             }
+            if (newType === 'any' && names.includes(model.name.toUpperCase())) {
+                try {
+                    for (var models_2 = (e_3 = void 0, __values(models)), models_2_1 = models_2.next(); !models_2_1.done; models_2_1 = models_2.next()) {
+                        var model_1 = models_2_1.value;
+                        if (type === model_1.type.toUpperCase().trim()) {
+                            newType = model_1.name[0].toUpperCase() + model_1.name.substring(1) + 'Type';
+                            imported = true;
+                        }
+                    }
+                }
+                catch (e_3_1) { e_3 = { error: e_3_1 }; }
+                finally {
+                    try {
+                        if (models_2_1 && !models_2_1.done && (_c = models_2.return)) _c.call(models_2);
+                    }
+                    finally { if (e_3) throw e_3.error; }
+                }
+            }
             var inputType = newType;
             if (type.indexOf('[]') !== -1) {
                 inputType += '[]';
             }
             formattedModels.push({
                 name: model.name,
-                type: inputType
+                type: inputType,
+                imported: imported
             });
         }
     }
@@ -133,10 +154,37 @@ function formatModel(models) {
     }
     return formattedModels;
 }
+function generateImports(models) {
+    var e_4, _a;
+    var output = '';
+    var hasImports = false;
+    try {
+        for (var models_3 = __values(models), models_3_1 = models_3.next(); !models_3_1.done; models_3_1 = models_3.next()) {
+            var model = models_3_1.value;
+            if (model.imported) {
+                var name = model.name[0].toUpperCase() + model.name.substring(1);
+                output += "import ".concat(name, "Type from 'types/prisma/").concat(name, "'\n");
+                hasImports = true;
+            }
+        }
+    }
+    catch (e_4_1) { e_4 = { error: e_4_1 }; }
+    finally {
+        try {
+            if (models_3_1 && !models_3_1.done && (_a = models_3.return)) _a.call(models_3);
+        }
+        finally { if (e_4) throw e_4.error; }
+    }
+    if (hasImports) {
+        output += '\n';
+    }
+    return output;
+}
+exports.generateImports = generateImports;
 function generatePrismaTypes() {
     return __awaiter(this, void 0, void 0, function () {
-        var prismaPath, prismaFile, matches, matches_1, matches_1_1, match, models, index, data, name, match2, indexEnd, modelContent, lines, lines_1, lines_1_1, line, lineFmt, tokens, tokenFmt, name_1, type, dataMap, typeFile, typeInject, dataMap_1, dataMap_1_1, item, typePath;
-        var e_3, _a, e_4, _b, e_5, _c;
+        var prismaPath, prismaFile, matches, matches_1, matches_1_1, match, models, index, data, name, match2, indexEnd, modelContent, lines, lines_1, lines_1_1, line, lineFmt, tokens, tokenFmt, name_1, type, dataMap, importMap, typeFile, typeInject, dataMap_1, dataMap_1_1, item, typePath;
+        var e_5, _a, e_6, _b, e_7, _c;
         return __generator(this, function (_d) {
             prismaPath = (0, path_1.join)(process.cwd(), 'prisma', 'schema.prisma');
             prismaFile = (0, fs_jetpack_1.read)(prismaPath) || '';
@@ -156,7 +204,7 @@ function generatePrismaTypes() {
                             name = data.slice(0, indexEnd).split('{')[0].replace('model', '').trim();
                             lines = modelContent.split('\n').filter(function (line) { return line.indexOf('@@') === -1; });
                             try {
-                                for (lines_1 = (e_4 = void 0, __values(lines)), lines_1_1 = lines_1.next(); !lines_1_1.done; lines_1_1 = lines_1.next()) {
+                                for (lines_1 = (e_6 = void 0, __values(lines)), lines_1_1 = lines_1.next(); !lines_1_1.done; lines_1_1 = lines_1.next()) {
                                     line = lines_1_1.value;
                                     lineFmt = line.trim();
                                     tokens = lineFmt.split(' ');
@@ -164,47 +212,49 @@ function generatePrismaTypes() {
                                     name_1 = (tokenFmt[0] || '');
                                     type = (tokenFmt[1] || '').toLowerCase();
                                     if (name_1 && type) {
-                                        models.push({ name: name_1, type: type });
+                                        models.push({ name: name_1, type: type, imported: false });
                                     }
                                 }
                             }
-                            catch (e_4_1) { e_4 = { error: e_4_1 }; }
+                            catch (e_6_1) { e_6 = { error: e_6_1 }; }
                             finally {
                                 try {
                                     if (lines_1_1 && !lines_1_1.done && (_b = lines_1.return)) _b.call(lines_1);
                                 }
-                                finally { if (e_4) throw e_4.error; }
+                                finally { if (e_6) throw e_6.error; }
                             }
                         }
                         dataMap = formatModel(models);
-                        typeFile = "export interface ".concat(name, "Type {{{injection}}}") + '\n\n' + "export default ".concat(name, "Type") + '\n';
+                        importMap = generateImports(dataMap);
+                        typeFile = "{{imports}}" + "export interface ".concat(name, "Type {{{injection}}}") + '\n\n' + "export default ".concat(name, "Type") + '\n';
                         typeInject = '';
                         try {
-                            for (dataMap_1 = (e_5 = void 0, __values(dataMap)), dataMap_1_1 = dataMap_1.next(); !dataMap_1_1.done; dataMap_1_1 = dataMap_1.next()) {
+                            for (dataMap_1 = (e_7 = void 0, __values(dataMap)), dataMap_1_1 = dataMap_1.next(); !dataMap_1_1.done; dataMap_1_1 = dataMap_1.next()) {
                                 item = dataMap_1_1.value;
                                 typeInject += '\t' + item.name + '?: ' + item.type + '\n';
                             }
                         }
-                        catch (e_5_1) { e_5 = { error: e_5_1 }; }
+                        catch (e_7_1) { e_7 = { error: e_7_1 }; }
                         finally {
                             try {
                                 if (dataMap_1_1 && !dataMap_1_1.done && (_c = dataMap_1.return)) _c.call(dataMap_1);
                             }
-                            finally { if (e_5) throw e_5.error; }
+                            finally { if (e_7) throw e_7.error; }
                         }
                         typeFile = typeFile.replace('{{injection}}', '\n' + typeInject);
+                        typeFile = typeFile.replace('{{imports}}', importMap);
                         typePath = (0, path_1.join)(process.cwd(), 'types', 'prisma', "".concat(name, ".tsx"));
                         (0, log_1.Log)("    \u2705  Generated types/prisma/".concat(name, ".tsx").green);
                         (0, fs_jetpack_1.write)(typePath, typeFile || '');
                     }
                 }
             }
-            catch (e_3_1) { e_3 = { error: e_3_1 }; }
+            catch (e_5_1) { e_5 = { error: e_5_1 }; }
             finally {
                 try {
                     if (matches_1_1 && !matches_1_1.done && (_a = matches_1.return)) _a.call(matches_1);
                 }
-                finally { if (e_3) throw e_3.error; }
+                finally { if (e_5) throw e_5.error; }
             }
             return [2 /*return*/];
         });

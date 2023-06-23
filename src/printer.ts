@@ -17,7 +17,7 @@ import { SuperagentTypes, injectSupergent } from './generators/superagent'
 export const Printer = new Command('🖨️ Printer')
 
 Printer
-  .version('1.3.2')
+  .version('1.3.3')
   .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.')
   .option('-a, --no-action', 'do not inject actions', false)
   .option('-s, --no-state', 'do not inject state', false)
@@ -54,7 +54,7 @@ Printer
   .description('Inject a slice into a component or page')
   .action(async (slice, component) => {
     registerConfig()
-    Log(`💉  Injecting ${slice} into ${component}`.green)
+    Log(`💉  Injecting ${slice} into ${component.replaceAll('.tsx', '')}`.green)
     await inject(slice, component, Printer.opts())
   })
 

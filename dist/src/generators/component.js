@@ -45,6 +45,7 @@ var path_1 = require("path");
 var fs_jetpack_1 = require("fs-jetpack");
 var log_1 = require("../helpers/log");
 var config_1 = require("../config");
+var nomenclature_1 = require("../helpers/nomenclature");
 function generateComponent(path) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
     return __awaiter(this, void 0, void 0, function () {
@@ -67,16 +68,7 @@ function generateComponent(path) {
                 case 2:
                     pathArray = path.replace('.tsx', '').split('/');
                     fileName = pathArray[pathArray.length - 1];
-                    name = fileName.replace(/[^\w\s]/gi, '');
-                    if (fileName.indexOf('.') !== -1) {
-                        name = fileName.split('.').map(function (word) { return word[0].toUpperCase() + word.substring(1); }).join('');
-                    }
-                    else if (fileName.indexOf('-') !== -1) {
-                        name = fileName.split('-').map(function (word) { return word[0].toUpperCase() + word.substring(1); }).join('');
-                    }
-                    else {
-                        name = name[0].toUpperCase() + name.substring(1);
-                    }
+                    name = (0, nomenclature_1.formatName)(fileName);
                     if (config_1.Config.componentFolder === true) {
                         component = (_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'component', 'component.nostyle.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path);
                         componentPath = (0, path_1.join)(process.cwd(), path, "".concat(fileName, ".component.tsx"));

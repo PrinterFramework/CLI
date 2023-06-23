@@ -56,7 +56,7 @@ var prisma_1 = require("./generators/prisma");
 var superagent_1 = require("./generators/superagent");
 exports.Printer = new commander_1.Command('🖨️ Printer');
 exports.Printer
-    .version('1.3.2')
+    .version('1.3.3')
     .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.')
     .option('-a, --no-action', 'do not inject actions', false)
     .option('-s, --no-state', 'do not inject state', false);
@@ -116,7 +116,7 @@ exports.Printer
         switch (_a.label) {
             case 0:
                 (0, config_1.registerConfig)();
-                (0, log_1.Log)("\uD83D\uDC89  Injecting ".concat(slice, " into ").concat(component).green);
+                (0, log_1.Log)("\uD83D\uDC89  Injecting ".concat(slice, " into ").concat(component.replaceAll('.tsx', '')).green);
                 return [4 /*yield*/, (0, inject_1.inject)(slice, component, exports.Printer.opts())];
             case 1:
                 _a.sent();

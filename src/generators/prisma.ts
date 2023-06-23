@@ -5,6 +5,7 @@ import { Log } from '../helpers/log'
 interface ModelType {
   name: string
   type: string
+  imported: boolean
 }
 
 interface TypeMatches {
@@ -29,15 +30,26 @@ const typeMatches = [
 
 function formatModel (models: ModelType[]): ModelType[] {
   const formattedModels = [] as ModelType[]
+  const names = models.map((item) => item.name.toUpperCase())
 
   for (const model of models) {
     const type = model.type.toUpperCase().trim()
     const tm = type.replaceAll('[]', '')
+    let imported = false
     let newType = 'any'
 
     for (const typeMatch of typeMatches) {
       if (typeMatch.matches.indexOf(tm) !== -1) {
         newType = typeMatch.type
+      }
+    }
+
+    if (newType === 'any' && names.includes(model.name.toUpperCase())) {
+      for (const model of models) {
+        if (type === model.type.toUpperCase().trim()) {
+          newType = model.name[0].toUpperCase() + model.name.substring(1) + 'Type'
+          imported = true
+        }
       }
     }
 
@@ -47,11 +59,28 @@ function formatModel (models: ModelType[]): ModelType[] {
     }
     formattedModels.push({
       name: model.name,
-      type: inputType
+      type: inputType,
+      imported
     })
   }
 
   return formattedModels
+}
+
+export function generateImports (models: ModelType[]): string {
+  let output = ''
+  let hasImports = false
+  for (const model of models) {
+    if (model.imported) {
+      const name = model.name[0].toUpperCase() + model.name.substring(1)
+      output += `import ${name}Type from 'types/prisma/${name}'\n`
+      hasImports = true
+    }
+  }
+  if (hasImports) {
+    output += '\n'
+  }
+  return output
 }
 
 export async function generatePrismaTypes () {
@@ -84,13 +113,15 @@ export async function generatePrismaTypes () {
           const type = (tokenFmt[1] || '').toLowerCase()
 
           if (name && type) {
-            models.push({ name, type })
+            models.push({ name, type, imported: false })
           }
         }
       }
 
       const dataMap = formatModel(models)
-      let typeFile = `export interface ${name}Type {{{injection}}}` + '\n\n' + `export default ${name}Type` + '\n'
+      const importMap = generateImports(dataMap)
+
+      let typeFile = '{{imports}}' + `export interface ${name}Type {{{injection}}}` + '\n\n' + `export default ${name}Type` + '\n'
       let typeInject = ''
 
       for (const item of dataMap) {
@@ -98,6 +129,7 @@ export async function generatePrismaTypes () {
       }
 
       typeFile = typeFile.replace('{{injection}}', '\n' + typeInject)
+      typeFile = typeFile.replace('{{imports}}', importMap)
       const typePath = join(process.cwd(), 'types', 'prisma', `${name}.tsx`)
 
       Log(`    ✅  Generated types/prisma/${name}.tsx`.green)

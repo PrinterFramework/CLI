@@ -1,5 +1,11 @@
 # 🛠️ CHANGELOG
 
+## v1.3.3
+
+- Dynamic type inference for prisma type generators
+
+- `path` refactoring to support all formats (`.ts`, `.tsx` and no suffix).
+
 ## v1.3.2
 
 - Updates prisma type generation nomenclature (hotfix)

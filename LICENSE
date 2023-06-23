@@ -16,14 +16,13 @@ when conveying this work.
 
 The full and exhaustive list of those sources excepted from the AGPLv3 are:
 
-* The Google Maps API v3 located at: http://maps.google.com/maps/api/js
-* The twitter "follow button" widget located at http://platform.twitter.com/widgets.js
-* The GitHub Gist API located at http://gist.github.com/{id}.js. This applies only to
+* The Google Maps API v3 located at: <http://maps.google.com/maps/api/js>
+* The twitter "follow button" widget located at <http://platform.twitter.com/widgets.js>
+* The GitHub Gist API located at <http://gist.github.com/{id}.js>. This applies only to
   the javascript coded issues by GitHub Inc. and explicitly does not apply to the
   content of any GitHub gist.
-* The disqus API located at http://<name>.disqus.com/embed.js where <name> is the
+* The disqus API located at <http://<name>.disqus.com/embed.js> where <name> is the
   userid of the forum.
-
 
 Additional terms to AGPLv3
 -------------------------

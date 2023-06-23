@@ -44,6 +44,7 @@ var prompts_1 = __importDefault(require("prompts"));
 var path_1 = require("path");
 var fs_jetpack_1 = require("fs-jetpack");
 var log_1 = require("../helpers/log");
+var nomenclature_1 = require("../helpers/nomenclature");
 function generateApi(path) {
     var _a;
     return __awaiter(this, void 0, void 0, function () {
@@ -67,16 +68,7 @@ function generateApi(path) {
                 case 2:
                     pathArray = path.split('/');
                     fileName = pathArray[pathArray.length - 1];
-                    name = fileName.replace(/[^\w\s]/gi, '');
-                    if (fileName.indexOf('.') !== -1) {
-                        name = fileName.split('.').map(function (word) { return word[0].toUpperCase() + word.substring(1); }).join('');
-                    }
-                    else if (fileName.indexOf('-') !== -1) {
-                        name = fileName.split('-').map(function (word) { return word[0].toUpperCase() + word.substring(1); }).join('');
-                    }
-                    else {
-                        name = name[0].toUpperCase() + name.substring(1);
-                    }
+                    name = (0, nomenclature_1.formatName)(fileName);
                     apiTemplate = (_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'api.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{name}}', name);
                     (0, fs_jetpack_1.write)(apiPath, apiTemplate || '');
                     (0, log_1.Log)("    \u2705  Created pages/api/".concat(path, ".tsx").green);
