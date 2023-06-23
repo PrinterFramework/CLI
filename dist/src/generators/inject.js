@@ -138,7 +138,7 @@ function inject(slice, component, opts) {
                     if ((0, match_1.findMatches)(newContents, match_1.DispatchMatcher).length === 0) {
                         injectionLine = (0, match_1.findMatches)(newContents, (0, match_1.functionMatcher)(fileName))[0];
                         tempContents = newContents.split('\n');
-                        tempContents[injectionLine] = tempContents[injectionLine] + '\n  const dispatch = useDispatch()';
+                        tempContents[injectionLine] = tempContents[injectionLine] + '\n  const dispatch = useAppDispatch()';
                         newContents = tempContents.join('\n');
                     }
                     if ((0, match_1.findMatches)(newContents, (0, match_1.actionMatcher)(actionInjections)).length > 0) {
@@ -146,7 +146,7 @@ function inject(slice, component, opts) {
                     }
                     else {
                         tempContents = newContents.split('\n');
-                        tempContents[0] = tempContents[0] + "\nimport { ".concat(actionInjections.join(', '), " } from 'redux/slice/").concat(slice, "'");
+                        tempContents[0] = tempContents[0] + "\nimport { ".concat(actionInjections.join(', ').replaceAll(':', ''), " } from 'redux/slice/").concat(slice, "'");
                         newContents = tempContents.join('\n');
                     }
                     (0, log_1.Log)("    \u2705  ".concat(actionInjections.length, " action").concat(actionInjections.length > 1 ? 's were' : ' was', " injected into the component").green);

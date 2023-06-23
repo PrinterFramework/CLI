@@ -1,5 +1,9 @@
 # 🛠️ CHANGELOG
 
+## v2.0.1
+
+- Fix injectable formatting issues
+
 ## v2.0.0
 
 - Complete refactor to Next App Directories, review new documentation

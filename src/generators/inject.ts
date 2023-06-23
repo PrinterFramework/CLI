@@ -121,7 +121,7 @@ export async function inject (slice: string, component: string, opts: OptsType) 
       if (findMatches(newContents, DispatchMatcher).length === 0) {
         const injectionLine = findMatches(newContents, functionMatcher(fileName))[0]
         const tempContents = newContents.split('\n')
-        tempContents[injectionLine] = tempContents[injectionLine] + '\n  const dispatch = useDispatch()'
+        tempContents[injectionLine] = tempContents[injectionLine] + '\n  const dispatch = useAppDispatch()'
         newContents = tempContents.join('\n')
       }
 
@@ -129,7 +129,7 @@ export async function inject (slice: string, component: string, opts: OptsType) 
         newContents = newContents.replace(actionMatcher(actionInjections), `import { ${actionInjections.join(', ')} } from 'redux/slice/${slice}'`)
       } else {
         const tempContents = newContents.split('\n')
-        tempContents[0] = tempContents[0] + `\nimport { ${actionInjections.join(', ')} } from 'redux/slice/${slice}'`
+        tempContents[0] = tempContents[0] + `\nimport { ${actionInjections.join(', ').replaceAll(':', '')} } from 'redux/slice/${slice}'`
         newContents = tempContents.join('\n')
       }
 
