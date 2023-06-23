@@ -1,5 +1,13 @@
-export interface {{name}}I {}
+'use client'
 
-export default function {{name}}({}: {{name}}I) {
-  return <h1>Page {{name}}</h1>
+export interface {{name}}PageI {
+
+}
+
+export default function {{name}}Page({}: {{name}}PageI) {
+  return (
+    <div className="container page">
+      <p>{{name}} Page</p>
+    </div>
+  )
 }

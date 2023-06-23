@@ -12,14 +12,13 @@ export async function injectSupergent (type: SuperagentTypes, component: string)
   let fileContents = ''
 
   if (filePath.indexOf('.tsx') === -1) {
-    if (exists(filePath) === 'dir') {
-      const fileComponentPath = join(process.cwd(), component, `${fileName}.component.tsx`)
-      fileContents = read(fileComponentPath) || ''
-    } else {
-      fileContents = read(`${filePath}.tsx`) || ''
-    }
+    fileContents = read(`${filePath}.tsx`) || ''
   } else {
     fileContents = read(`${filePath}`) || ''
+  }
+
+  if (findMatches(fileContents, stateMatcher()).length === 0 && findMatches(fileContents, effectMatcher()).length === 0) {
+    fileContents = 'import { useState, useEffect } from \'react\'' + '\n' + fileContents
   }
 
   if (findMatches(fileContents, stateMatcher()).length === 0) {

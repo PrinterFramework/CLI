@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.findMatches = exports.typeMatcher = exports.actionMatcher = exports.selectorMatcher = exports.functionMatcher = exports.effectMatcher = exports.stateMatcher = exports.superagentMatcher = exports.BraceMatcher2 = exports.BraceMatcher = exports.DispatchMatcher = exports.ReduxOptionalMatcher = exports.ReduxMatcher = exports.ImportMatcher = exports.SliceMatcher = void 0;
 exports.SliceMatcher = /^(?=.*export)(?=.*createSlice).*$/gmi;
 exports.ImportMatcher = /^(?=.*import)(?=.*from).*$/gmi;
-exports.ReduxMatcher = /^(?=.*import)(?=.*from)(?=.*useSelector)(?=.*useDispatch).*$/gmi;
-exports.ReduxOptionalMatcher = /^(?=.*import)(?=.*from)(?=.*useSelector|useDispatch).*$/gmi;
-exports.DispatchMatcher = /^(?=.*const)(?=.*dispatch)(?=.*useDispatch).*$/gmi;
+exports.ReduxMatcher = /^(?=.*import)(?=.*from)(?=.*useAppSelector)(?=.*useAppDispatch).*$/gmi;
+exports.ReduxOptionalMatcher = /^(?=.*import)(?=.*from)(?=.*useAppSelector|useAppDispatch).*$/gmi;
+exports.DispatchMatcher = /^(?=.*const)(?=.*dispatch)(?=.*useAppDispatch).*$/gmi;
 exports.BraceMatcher = /^(?=.*\[).*$/gmi;
 exports.BraceMatcher2 = /^(?=.*{).*$/gmi;
 function superagentMatcher(type) {

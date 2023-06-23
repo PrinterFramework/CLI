@@ -43,7 +43,7 @@ var log_1 = require("../helpers/log");
 var match_1 = require("../helpers/match");
 function inject(slice, component, opts) {
     return __awaiter(this, void 0, void 0, function () {
-        var filePath, pathArray, fileName, fileContents, fileComponentPath, slicePath, sliceContents, matches, splitFile, sliceMatch, newContents, stateInjections, actionInjections, i, index, match, decorator, typeMap, varKey, addDots, varKey, hasExistingImport, i, stateInjection, typeName, i, stateInjection, injectionLine, tempContents, typeMap, value, spreadLeft, spreadRight, typeName, injectionLine, tempContents, tempContents, fileComponentPath;
+        var filePath, pathArray, fileName, fileContents, fileComponentPath, slicePath, sliceContents, matches, splitFile, sliceMatch, newContents, stateInjections, actionInjections, i, index, match, decorator, typeMap, varKey, addDots, varKey, hasExistingImport, i, stateInjection, typeName, i, stateInjection, injectionLine, tempContents, value, spreadLeft, spreadRight, typeName, injectionLine, tempContents, tempContents, fileComponentPath;
         return __generator(this, function (_a) {
             component = component.replaceAll('.tsx', '');
             filePath = (0, path_1.join)(process.cwd(), component);
@@ -89,10 +89,10 @@ function inject(slice, component, opts) {
             }
             hasExistingImport = (0, match_1.findMatches)(newContents, match_1.ReduxOptionalMatcher);
             if (hasExistingImport.length > 0) {
-                newContents = newContents.replace(match_1.ReduxOptionalMatcher, 'import { useSelector, useDispatch } from \'react-redux\'');
+                newContents = newContents.replace(match_1.ReduxOptionalMatcher, 'import { useAppSelector, useAppDispatch } from \'redux/hooks\'');
             }
             else {
-                newContents = "import { useSelector, useDispatch } from 'react-redux'\n\n".concat(newContents);
+                newContents = "import { useAppSelector, useAppDispatch } from 'redux/hooks'\n\n".concat(newContents);
             }
             if (opts.state) {
                 for (i = 0; i < stateInjections.length; i++) {
@@ -112,7 +112,6 @@ function inject(slice, component, opts) {
                     if ((0, match_1.findMatches)(newContents, (0, match_1.selectorMatcher)(stateInjection.value)).length === 0) {
                         injectionLine = (0, match_1.findMatches)(newContents, (0, match_1.functionMatcher)(fileName))[0];
                         tempContents = newContents.split('\n');
-                        typeMap = 'any';
                         value = stateInjection.value;
                         spreadLeft = '{';
                         spreadRight = '}';
@@ -124,9 +123,8 @@ function inject(slice, component, opts) {
                                 spreadLeft = '[';
                                 spreadRight = ']';
                             }
-                            typeMap = "{ ".concat(slice, ": { ").concat(value, ": ").concat(typeName, " } }");
                         }
-                        tempContents[injectionLine] = tempContents[injectionLine] + "\n  const ".concat(value, " = useSelector((state: ").concat(typeMap, ") => ").concat(stateInjection.addDots ? '(' + spreadLeft + ' ' : '').concat(stateInjection.addDots ? '...' : '', "state.").concat(slice, ".").concat(value).concat(stateInjection.addDots ? ' ' + spreadRight + ')' : '', ")");
+                        tempContents[injectionLine] = tempContents[injectionLine] + "\n  const ".concat(value, " = useAppSelector((state) => ").concat(stateInjection.addDots ? '(' + spreadLeft + ' ' : '').concat(stateInjection.addDots ? '...' : '', "state.").concat(slice, ".").concat(value).concat(stateInjection.addDots ? ' ' + spreadRight + ')' : '', ")");
                         if (i === 0) {
                             tempContents[injectionLine] = tempContents[injectionLine] + '\n';
                         }
@@ -153,6 +151,10 @@ function inject(slice, component, opts) {
                     }
                     (0, log_1.Log)("    \u2705  ".concat(actionInjections.length, " action").concat(actionInjections.length > 1 ? 's were' : ' was', " injected into the component").green);
                 }
+            }
+            if (filePath.indexOf('app/') !== -1) {
+                newContents = newContents.replaceAll('\'use client\'', '');
+                newContents = '\'use client\'\n' + newContents;
             }
             if ((0, fs_jetpack_1.exists)(filePath) === 'dir') {
                 fileComponentPath = (0, path_1.join)(process.cwd(), component, "".concat(fileName, ".component.tsx"));

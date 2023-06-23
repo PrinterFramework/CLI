@@ -1,0 +1,9 @@
+{
+  "crud": {
+    "create": true,
+    "update": true,
+    "delete": true,
+    "list": true,
+    "get": true
+  }
+}

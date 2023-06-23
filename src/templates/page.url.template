@@ -1,10 +1,13 @@
-import { useRouter } from 'next/router'
+'use client'
 
-export interface {{name}}I {}
+export interface {{name}}PageI {
+  {{url_interface}}
+}
 
-export default function {{name}}({}: {{name}}I) {
-  const router = useRouter()
-  const { {{url}} } = router.query
-
-  return <h1>Page {{name}}</h1>
+export default function {{name}}Page({ {{url_variables}} }: {{name}}PageI) {
+  return (
+    <div className="container page">
+      <p>{{name}} Page</p>
+    </div>
+  )
 }

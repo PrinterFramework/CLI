@@ -3,13 +3,6 @@ import { join } from 'path'
 import { Log } from './helpers/log'
 
 export interface PrinterConfig {
-  componentFolder?: boolean
-  component?: {
-    index?: boolean
-    component?: boolean
-    style?: boolean
-    test?: boolean
-  }
   crud?: {
     create: boolean
     update: boolean
@@ -20,13 +13,6 @@ export interface PrinterConfig {
 }
 
 export let Config: PrinterConfig = {
-  componentFolder: false,
-  component: {
-    index: true,
-    component: true,
-    style: false,
-    test: false
-  },
   crud: {
     create: true,
     update: true,

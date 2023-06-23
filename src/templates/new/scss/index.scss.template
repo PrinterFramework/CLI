@@ -1,0 +1,18 @@
+@import "/scss/theme.scss";
+
+section.root-page {
+  h2 {
+    font-size: 32px;
+    padding: 0 0 15px 0;
+  }
+
+  div.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a.button {
+      margin: 15px;
+    }
+  }
+}

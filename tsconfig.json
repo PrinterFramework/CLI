@@ -14,11 +14,11 @@
         "strict": true
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "src/**/*.template"
     ],
     "include": [
         "src/**/*.ts",
-        "src/**/*.template",
         "test/**/*.ts"
     ]
   }

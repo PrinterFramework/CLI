@@ -63,9 +63,9 @@ export async function inject (slice: string, component: string, opts: OptsType) 
   const hasExistingImport = findMatches(newContents, ReduxOptionalMatcher)
 
   if (hasExistingImport.length > 0) {
-    newContents = newContents.replace(ReduxOptionalMatcher, 'import { useSelector, useDispatch } from \'react-redux\'')
+    newContents = newContents.replace(ReduxOptionalMatcher, 'import { useAppSelector, useAppDispatch } from \'redux/hooks\'')
   } else {
-    newContents = `import { useSelector, useDispatch } from 'react-redux'\n\n${newContents}`
+    newContents = `import { useAppSelector, useAppDispatch } from 'redux/hooks'\n\n${newContents}`
   }
 
   if (opts.state) {
@@ -89,7 +89,6 @@ export async function inject (slice: string, component: string, opts: OptsType) 
         const injectionLine = findMatches(newContents, functionMatcher(fileName))[0]
         const tempContents = newContents.split('\n')
 
-        let typeMap = 'any'
         let value = stateInjection.value
         let spreadLeft = '{'
         let spreadRight = '}'
@@ -102,10 +101,9 @@ export async function inject (slice: string, component: string, opts: OptsType) 
             spreadLeft = '['
             spreadRight = ']'
           }
-          typeMap = `{ ${slice}: { ${value}: ${typeName} } }`
         }
 
-        tempContents[injectionLine] = tempContents[injectionLine] + `\n  const ${value} = useSelector((state: ${typeMap}) => ${stateInjection.addDots ? '(' + spreadLeft + ' ' : ''}${stateInjection.addDots ? '...' : ''}state.${slice}.${value}${stateInjection.addDots ? ' ' + spreadRight + ')' : ''})`
+        tempContents[injectionLine] = tempContents[injectionLine] + `\n  const ${value} = useAppSelector((state) => ${stateInjection.addDots ? '(' + spreadLeft + ' ' : ''}${stateInjection.addDots ? '...' : ''}state.${slice}.${value}${stateInjection.addDots ? ' ' + spreadRight + ')' : ''})`
 
         if (i === 0) {
           tempContents[injectionLine] = tempContents[injectionLine] + '\n'
@@ -137,6 +135,11 @@ export async function inject (slice: string, component: string, opts: OptsType) 
 
       Log(`    ✅  ${actionInjections.length} action${actionInjections.length > 1 ? 's were' : ' was'} injected into the component`.green)
     }
+  }
+
+  if (filePath.indexOf('app/') !== -1) {
+    newContents = newContents.replaceAll('\'use client\'', '')
+    newContents = '\'use client\'\n' + newContents
   }
 
   if (exists(filePath) === 'dir') {

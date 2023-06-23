@@ -1,11 +1,4 @@
 export interface PrinterConfig {
-    componentFolder?: boolean;
-    component?: {
-        index?: boolean;
-        component?: boolean;
-        style?: boolean;
-        test?: boolean;
-    };
     crud?: {
         create: boolean;
         update: boolean;

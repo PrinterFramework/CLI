@@ -1,0 +1,17 @@
+$header-font: 'Oswald';
+$body-font: 'Montserrat';
+
+$primary: #C49A0F;
+$primary-light: #F2D577;
+
+$container-width: 1268px;
+$page-height: 100vh;
+
+@mixin bg-gradient() {
+  background: rgb(41, 41, 41);
+  background: radial-gradient(circle, rgba(41, 41, 41, 1) 0%, rgba(29, 29, 29, 1) 100%);
+}
+
+@mixin transition($property: all, $duration: 0.25s) {
+  transition: $property $duration cubic-bezier(0.33, 1, 0.68, 1);
+}

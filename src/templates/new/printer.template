@@ -1,3 +1,0 @@
-@import "/scss/reset.scss";
-@import "/scss/theme.scss";
-@import "/scss/ui.scss";

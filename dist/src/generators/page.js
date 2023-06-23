@@ -46,13 +46,13 @@ var fs_jetpack_1 = require("fs-jetpack");
 var log_1 = require("../helpers/log");
 var nomenclature_1 = require("../helpers/nomenclature");
 function generatePage(path) {
-    var _a, _b;
+    var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var pagePath, result, pathArray, fileName, urls, name, pageTemplate;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var pagePath, result, pathArray, fileName, urls, name, pageTemplate, urlInterface;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    pagePath = (0, path_1.join)(process.cwd(), 'pages', "".concat(path.replace('.tsx', ''), ".tsx"));
+                    pagePath = (0, path_1.join)(process.cwd(), 'app', "".concat(path.replace('.tsx', ''), "/page.tsx"));
                     if (!((0, fs_jetpack_1.exists)(pagePath) !== false)) return [3 /*break*/, 2];
                     return [4 /*yield*/, (0, prompts_1.default)({
                             type: 'confirm',
@@ -60,28 +60,31 @@ function generatePage(path) {
                             message: 'This page already exists, overwrite it?'
                         })];
                 case 1:
-                    result = _c.sent();
+                    result = _b.sent();
                     if (result.overwrite === false) {
                         return [2 /*return*/];
                     }
-                    _c.label = 2;
+                    _b.label = 2;
                 case 2:
                     pathArray = path.replace('.tsx', '').split('/');
                     fileName = pathArray[pathArray.length - 1];
                     urls = [];
                     name = (0, nomenclature_1.formatName)(fileName);
                     pageTemplate = '';
-                    console.log(name, path);
                     if (path.match(/\[(.*?)\]/g)) {
                         urls = path.match(/\[(.*?)\]/g);
                         urls = urls.map(function (url) { return url.replace(/\[/g, '').replace(/\]/g, ''); });
-                        pageTemplate = ((_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'page.url.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{name}}', name).replaceAll('{{url}}', urls.join(', '))) || '';
+                        urlInterface = urls.map(function (url) { return "".concat(url, ": string"); });
+                        pageTemplate = ((0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'page.url.template')) || '')
+                            .replaceAll('{{name}}', name)
+                            .replaceAll('{{url_variables}}', 'params')
+                            .replaceAll('{{url_interface}}', "params: {\n    ".concat(urlInterface.join('\n'), "\n  }"));
                     }
                     else {
-                        pageTemplate = ((_b = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'page.template'))) === null || _b === void 0 ? void 0 : _b.replaceAll('{{name}}', name)) || '';
+                        pageTemplate = ((_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'page.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{name}}', name)) || '';
                     }
                     (0, fs_jetpack_1.write)(pagePath, pageTemplate);
-                    (0, log_1.Log)("    \u2705  Created pages/".concat(path, ".tsx").green);
+                    (0, log_1.Log)("    \u2705  Created app/".concat(path, "/page.tsx").green);
                     return [2 /*return*/];
             }
         });

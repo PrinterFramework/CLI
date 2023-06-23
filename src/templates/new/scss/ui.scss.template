@@ -1,0 +1,88 @@
+@import "/scss/theme.scss";
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: $body-font;
+    @include bg-gradient();
+    color: white;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $header-font;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+h3 {
+    font-size: 18px;
+}
+
+h4 {
+    font-size: 16px;
+}
+
+a {
+    cursor: pointer;
+}
+
+button, input, textarea {
+    font-family: inherit;
+    outline: none;
+}
+
+section.container, div.container {
+    width: 100%;
+    max-width: $container-width;
+    margin: auto;
+    &.page {
+        min-height: $page-height;
+    }
+    &.flex {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    &.center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+a.button, button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 35px;
+    border-radius: 3px;
+    font-family: $body-font;
+    font-size: 16px;
+    font-weight: bold;
+    background: $primary;
+    color: white;
+    text-decoration: none;
+    margin: 0 15px 0 0;
+    cursor: pointer;
+    @include transition();
+
+    &:hover {
+        background: $primary-light;
+    }
+
+    .i, .icon {
+        margin: 0 8px 0 0;
+    }
+}

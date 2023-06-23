@@ -44,14 +44,13 @@ var prompts_1 = __importDefault(require("prompts"));
 var path_1 = require("path");
 var fs_jetpack_1 = require("fs-jetpack");
 var log_1 = require("../helpers/log");
-var config_1 = require("../config");
 var nomenclature_1 = require("../helpers/nomenclature");
 function generateComponent(path) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+    var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var result, pathArray, fileName, name, component, componentPath, style, stylePath, test_1, testPath, index, indexPath, component, componentPath;
-        return __generator(this, function (_m) {
-            switch (_m.label) {
+        var result, pathArray, fileName, name, component, componentPath;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     if (!((0, fs_jetpack_1.exists)((0, path_1.join)(process.cwd(), path)) || (0, fs_jetpack_1.exists)((0, path_1.join)(process.cwd(), "".concat(path.replace('.tsx', ''), ".tsx"))))) return [3 /*break*/, 2];
                     return [4 /*yield*/, (0, prompts_1.default)({
@@ -60,49 +59,19 @@ function generateComponent(path) {
                             message: 'This component already exists, overwrite it?'
                         })];
                 case 1:
-                    result = _m.sent();
+                    result = _b.sent();
                     if (result.overwrite === false) {
                         return [2 /*return*/];
                     }
-                    _m.label = 2;
+                    _b.label = 2;
                 case 2:
                     pathArray = path.replace('.tsx', '').split('/');
                     fileName = pathArray[pathArray.length - 1];
                     name = (0, nomenclature_1.formatName)(fileName);
-                    if (config_1.Config.componentFolder === true) {
-                        component = (_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'component', 'component.nostyle.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path);
-                        componentPath = (0, path_1.join)(process.cwd(), path, "".concat(fileName, ".component.tsx"));
-                        if (((_b = config_1.Config.component) === null || _b === void 0 ? void 0 : _b.style) === true) {
-                            component = (_c = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'component', 'component.template'))) === null || _c === void 0 ? void 0 : _c.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path);
-                            style = (_d = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'component', 'style.template'))) === null || _d === void 0 ? void 0 : _d.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path);
-                            stylePath = (0, path_1.join)(process.cwd(), path, "".concat(fileName, ".style.tsx"));
-                            (0, fs_jetpack_1.write)(stylePath, style || '');
-                            (0, log_1.Log)("    \u2705  Created ".concat(fileName, ".style.tsx").green);
-                        }
-                        (0, fs_jetpack_1.write)(componentPath, component || '');
-                        (0, log_1.Log)("    \u2705  Created ".concat(fileName, ".component.tsx").green);
-                        if ((_e = config_1.Config.component) === null || _e === void 0 ? void 0 : _e.test) {
-                            test_1 = (_f = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'component', 'test.template'))) === null || _f === void 0 ? void 0 : _f.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path);
-                            testPath = (0, path_1.join)(process.cwd(), path, "".concat(fileName, ".test.tsx"));
-                            (0, fs_jetpack_1.write)(testPath, test_1 || '');
-                            (0, log_1.Log)("    \u2705  Created ".concat(fileName, ".test.tsx").green);
-                        }
-                        if ((_g = config_1.Config.component) === null || _g === void 0 ? void 0 : _g.index) {
-                            index = (_h = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'component', 'index.nostyle.template'))) === null || _h === void 0 ? void 0 : _h.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path);
-                            indexPath = (0, path_1.join)(process.cwd(), path, 'index.tsx');
-                            if (((_j = config_1.Config.component) === null || _j === void 0 ? void 0 : _j.style) === true) {
-                                index = (_k = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'component', 'index.template'))) === null || _k === void 0 ? void 0 : _k.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path).replaceAll('{{path}}', path);
-                            }
-                            (0, fs_jetpack_1.write)(indexPath, index || '');
-                            (0, log_1.Log)('    ✅  Created index.tsx'.green);
-                        }
-                    }
-                    else {
-                        component = (_l = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'component', 'component.nostyle.template'))) === null || _l === void 0 ? void 0 : _l.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path);
-                        componentPath = (0, path_1.join)(process.cwd(), "".concat(path.replace('.tsx', ''), ".tsx"));
-                        (0, fs_jetpack_1.write)(componentPath, component || '');
-                        (0, log_1.Log)("    \u2705  Created ".concat(path.replace('.tsx', ''), ".tsx").green);
-                    }
+                    component = (_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'component', 'component.nostyle.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{name}}', name).replaceAll('{{prefix}}', fileName).replaceAll('{{path}}', path);
+                    componentPath = (0, path_1.join)(process.cwd(), "".concat(path.replace('.tsx', ''), ".tsx"));
+                    (0, fs_jetpack_1.write)(componentPath, component || '');
+                    (0, log_1.Log)("    \u2705  Created ".concat(path.replace('.tsx', ''), ".tsx").green);
                     return [2 /*return*/];
             }
         });

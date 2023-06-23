@@ -1,8 +1,8 @@
 export const SliceMatcher = /^(?=.*export)(?=.*createSlice).*$/gmi
 export const ImportMatcher = /^(?=.*import)(?=.*from).*$/gmi
-export const ReduxMatcher = /^(?=.*import)(?=.*from)(?=.*useSelector)(?=.*useDispatch).*$/gmi
-export const ReduxOptionalMatcher = /^(?=.*import)(?=.*from)(?=.*useSelector|useDispatch).*$/gmi
-export const DispatchMatcher = /^(?=.*const)(?=.*dispatch)(?=.*useDispatch).*$/gmi
+export const ReduxMatcher = /^(?=.*import)(?=.*from)(?=.*useAppSelector)(?=.*useAppDispatch).*$/gmi
+export const ReduxOptionalMatcher = /^(?=.*import)(?=.*from)(?=.*useAppSelector|useAppDispatch).*$/gmi
+export const DispatchMatcher = /^(?=.*const)(?=.*dispatch)(?=.*useAppDispatch).*$/gmi
 export const BraceMatcher = /^(?=.*\[).*$/gmi
 export const BraceMatcher2 = /^(?=.*{).*$/gmi
 

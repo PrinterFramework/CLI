@@ -16,13 +16,6 @@ var fs_jetpack_1 = require("fs-jetpack");
 var path_1 = require("path");
 var log_1 = require("./helpers/log");
 exports.Config = {
-    componentFolder: false,
-    component: {
-        index: true,
-        component: true,
-        style: false,
-        test: false
-    },
     crud: {
         create: true,
         update: true,

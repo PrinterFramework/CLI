@@ -1,5 +1,15 @@
 # 🛠️ CHANGELOG
 
+## v2.0.0
+
+- Complete refactor to Next App Directories, review new documentation
+
+### Notice
+
+**Printer v1.x.x** is compatible with the old Next patterns. You can review the documentation on the v1 website: [v1.prntr.click/docs](https://v1.prntr.click/docs)
+
+**Printer v2.x.x** leverages the Next App Directory pattern. This will be on the main documentation website: [prntr.click/docs](https://prntr.click/docs)
+
 ## v1.3.40
 
 - Hotfix to type inference

@@ -35,6 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -46,98 +57,157 @@ var fs_jetpack_1 = require("fs-jetpack");
 var log_1 = require("../helpers/log");
 var crypto_1 = require("crypto");
 function generateNewProject(path) {
-    var _a;
     if (path === void 0) { path = '.'; }
     return __awaiter(this, void 0, void 0, function () {
-        var readmePath, appPath, documentPath, babelPath, gitignorePath, gitkeepPath, envdevPath, gitkeepPublicPath, indexPath, utilSessionPath, resetCssPath, printerScssPath, themeScssPath, uiScssPath, prismaClientPath, prismaSchemaPath, packagePath, wrapperPath, reducerPath, reducersPath, tsconfigPath, precommitPath, eslintrcPath, printerConfigPath, result;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var configPath, result, root, root_1, root_1_1, item, itemPath, contents, sessionPath, sessionContents, counterTypePath, counterTypeContents, scss, scss_1, scss_1_1, item, itemPath, contents, prisma, prisma_1, prisma_1_1, item, itemPath, contents, redux, redux_1, redux_1_1, item, itemPath, contents, reduxSlicePath, reduxSliceContents, app, app_1, app_1_1, item, itemPath, contents;
+        var e_1, _a, e_2, _b, e_3, _c, e_4, _d, e_5, _e;
+        return __generator(this, function (_f) {
+            switch (_f.label) {
                 case 0:
-                    readmePath = (0, path_1.join)(process.cwd(), path, 'README.md');
-                    appPath = (0, path_1.join)(process.cwd(), path, 'pages', '_app.tsx');
-                    documentPath = (0, path_1.join)(process.cwd(), path, 'pages', '_document.tsx');
-                    babelPath = (0, path_1.join)(process.cwd(), path, '.babelrc');
-                    gitignorePath = (0, path_1.join)(process.cwd(), path, '.gitignore');
-                    gitkeepPath = (0, path_1.join)(process.cwd(), path, '.gitkeep');
-                    envdevPath = (0, path_1.join)(process.cwd(), path, '.env.dev');
-                    gitkeepPublicPath = (0, path_1.join)(process.cwd(), path, 'public', '.gitkeep');
-                    indexPath = (0, path_1.join)(process.cwd(), path, 'pages', 'index.tsx');
-                    utilSessionPath = (0, path_1.join)(process.cwd(), path, 'util', 'session.ts');
-                    resetCssPath = (0, path_1.join)(process.cwd(), path, 'scss', 'reset.scss');
-                    printerScssPath = (0, path_1.join)(process.cwd(), path, 'scss', 'printer.scss');
-                    themeScssPath = (0, path_1.join)(process.cwd(), path, 'scss', 'theme.scss');
-                    uiScssPath = (0, path_1.join)(process.cwd(), path, 'scss', 'ui.scss');
-                    prismaClientPath = (0, path_1.join)(process.cwd(), path, 'prisma', 'client.ts');
-                    prismaSchemaPath = (0, path_1.join)(process.cwd(), path, 'prisma', 'schema.prisma');
-                    packagePath = (0, path_1.join)(process.cwd(), path, 'package.json');
-                    wrapperPath = (0, path_1.join)(process.cwd(), path, 'redux', 'wrapper.tsx');
-                    reducerPath = (0, path_1.join)(process.cwd(), path, 'redux', 'reducer.tsx');
-                    reducersPath = (0, path_1.join)(process.cwd(), path, 'redux', 'reducers.json');
-                    tsconfigPath = (0, path_1.join)(process.cwd(), path, 'tsconfig.json');
-                    precommitPath = (0, path_1.join)(process.cwd(), path, '.husky', 'pre-commit');
-                    eslintrcPath = (0, path_1.join)(process.cwd(), path, '.eslintrc.js');
-                    printerConfigPath = (0, path_1.join)(process.cwd(), path, 'printer.config.json');
-                    if (!((0, fs_jetpack_1.exists)(printerConfigPath) !== false)) return [3 /*break*/, 2];
+                    configPath = (0, path_1.join)(process.cwd(), path, 'printer.config.json');
+                    if (!((0, fs_jetpack_1.exists)(configPath) !== false)) return [3 /*break*/, 2];
                     return [4 /*yield*/, (0, prompts_1.default)({
                             type: 'confirm',
                             name: 'overwrite',
                             message: 'A project already exists here, overwrite it?'
                         })];
                 case 1:
-                    result = _b.sent();
+                    result = _f.sent();
                     if (result.overwrite === false) {
                         return [2 /*return*/];
                     }
-                    _b.label = 2;
+                    _f.label = 2;
                 case 2:
-                    (0, fs_jetpack_1.write)(readmePath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'readme.template')) || '');
-                    (0, log_1.Log)('    ✅  Created README.md'.green);
-                    (0, fs_jetpack_1.write)(babelPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'babelrc.template')) || '');
-                    (0, log_1.Log)('    ✅  Created .babelrc'.green);
-                    (0, fs_jetpack_1.write)(gitignorePath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'gitignore.template')) || '');
-                    (0, log_1.Log)('    ✅  Created .gitignore'.green);
-                    (0, fs_jetpack_1.write)(gitkeepPath, '');
-                    (0, log_1.Log)('    ✅  Created .gitkeep'.green);
-                    (0, fs_jetpack_1.write)(envdevPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'env.dev.template')) || '');
-                    (0, log_1.Log)('    ✅  Created .env.dev'.green);
-                    (0, fs_jetpack_1.write)(gitkeepPublicPath, '');
-                    (0, log_1.Log)('    ✅  Created public/.gitkeep'.green);
-                    (0, fs_jetpack_1.write)(appPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', '_app.template')) || '');
-                    (0, log_1.Log)('    ✅  Created pages/_app.tsx'.green);
-                    (0, fs_jetpack_1.write)(documentPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', '_document.template')) || '');
-                    (0, log_1.Log)('    ✅  Created pages/_document.tsx'.green);
-                    (0, fs_jetpack_1.write)(indexPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'index.template')) || '');
-                    (0, log_1.Log)('    ✅  Created pages/index.tsx'.green);
-                    (0, fs_jetpack_1.write)(utilSessionPath, ((_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'session.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{password}}', (0, crypto_1.randomBytes)(32).toString('hex'))) || '');
+                    root = [
+                        'printer.config.json',
+                        '.env.dev.local',
+                        '.eslintrc.js',
+                        '.gitignore',
+                        'middleware.tsx',
+                        'next.config.js',
+                        'package.json',
+                        'README.md',
+                        'tsconfig.json'
+                    ];
+                    try {
+                        for (root_1 = __values(root), root_1_1 = root_1.next(); !root_1_1.done; root_1_1 = root_1.next()) {
+                            item = root_1_1.value;
+                            itemPath = (0, path_1.join)(process.cwd(), path, item);
+                            contents = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', "".concat(item, ".template"))) || '';
+                            if (item === '.env.dev.local') {
+                                contents = contents.replaceAll('{{password}}', (0, crypto_1.randomBytes)(32).toString('hex'));
+                            }
+                            (0, fs_jetpack_1.write)(itemPath, contents);
+                            (0, log_1.Log)("    \u2705  Created ".concat(item).green);
+                        }
+                    }
+                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    finally {
+                        try {
+                            if (root_1_1 && !root_1_1.done && (_a = root_1.return)) _a.call(root_1);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                    }
+                    (0, fs_jetpack_1.write)((0, path_1.join)(process.cwd(), path, 'public', '.gitkeep'), '');
+                    sessionPath = (0, path_1.join)(process.cwd(), path, 'util', 'session.ts');
+                    sessionContents = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'util', 'session.ts.template')) || '';
+                    sessionContents = sessionContents.replaceAll('{{password}}', (0, crypto_1.randomBytes)(32).toString('hex'));
+                    (0, fs_jetpack_1.write)(sessionPath, sessionContents);
                     (0, log_1.Log)('    ✅  Created util/session.ts'.green);
-                    (0, fs_jetpack_1.write)(resetCssPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'reset.template')) || '');
-                    (0, log_1.Log)('    ✅  Created scss/reset.css'.green);
-                    (0, fs_jetpack_1.write)(printerScssPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'printer.template')) || '');
-                    (0, log_1.Log)('    ✅  Created scss/printer.scss'.green);
-                    (0, fs_jetpack_1.write)(themeScssPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'theme.template')) || '');
-                    (0, log_1.Log)('    ✅  Created scss/theme.scss'.green);
-                    (0, fs_jetpack_1.write)(uiScssPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'ui.template')) || '');
-                    (0, log_1.Log)('    ✅  Created scss/ui.scss'.green);
-                    (0, fs_jetpack_1.write)(prismaClientPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'prisma.client.template')) || '');
-                    (0, log_1.Log)('    ✅  Created prisma/client.ts'.green);
-                    (0, fs_jetpack_1.write)(prismaSchemaPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'schema.prisma.template')) || '');
-                    (0, log_1.Log)('    ✅  Created prisma/schema.prisma'.green);
-                    (0, fs_jetpack_1.write)(packagePath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'package.template')) || '');
-                    (0, log_1.Log)('    ✅  Created package.json'.green);
-                    (0, fs_jetpack_1.write)(wrapperPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'wrapper.template')) || '');
-                    (0, log_1.Log)('    ✅  Created redux/wrapper.tsx'.green);
-                    (0, fs_jetpack_1.write)(reducerPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'reducer.template')) || '');
-                    (0, log_1.Log)('    ✅  Created redux/reducer.tsx'.green);
-                    (0, fs_jetpack_1.write)(reducersPath, '[]');
-                    (0, log_1.Log)('    ✅  Created redux/reducers.json'.green);
-                    (0, fs_jetpack_1.write)(tsconfigPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'tsconfig.template')) || '');
-                    (0, log_1.Log)('    ✅  Created tsconfig.json'.green);
-                    (0, fs_jetpack_1.write)(precommitPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'precommit.template')) || '');
-                    (0, log_1.Log)('    ✅  Created .husky/pre-commit'.green);
-                    (0, fs_jetpack_1.write)(eslintrcPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'eslintrc.template')) || '');
-                    (0, log_1.Log)('    ✅  Created printer.config.json'.green);
-                    (0, fs_jetpack_1.write)(printerConfigPath, (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'printer.config.template')) || '');
-                    (0, log_1.Log)('    ✅  Created .eslintrc.js'.green);
+                    counterTypePath = (0, path_1.join)(process.cwd(), path, 'types', 'counter.tsx');
+                    counterTypeContents = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'types', 'counter.tsx.template')) || '';
+                    (0, fs_jetpack_1.write)(counterTypePath, counterTypeContents);
+                    (0, log_1.Log)('    ✅  Created types/counter.tsx'.green);
+                    scss = [
+                        'printer.scss',
+                        'reset.scss',
+                        'theme.scss',
+                        'ui.scss',
+                        'index.scss'
+                    ];
+                    try {
+                        for (scss_1 = __values(scss), scss_1_1 = scss_1.next(); !scss_1_1.done; scss_1_1 = scss_1.next()) {
+                            item = scss_1_1.value;
+                            itemPath = (0, path_1.join)(process.cwd(), path, 'scss', item);
+                            contents = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'scss', "".concat(item, ".template"))) || '';
+                            (0, fs_jetpack_1.write)(itemPath, contents);
+                            (0, log_1.Log)("    \u2705  Created scss/".concat(item).green);
+                        }
+                    }
+                    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                    finally {
+                        try {
+                            if (scss_1_1 && !scss_1_1.done && (_b = scss_1.return)) _b.call(scss_1);
+                        }
+                        finally { if (e_2) throw e_2.error; }
+                    }
+                    prisma = [
+                        'client.ts',
+                        'schema.prisma'
+                    ];
+                    try {
+                        for (prisma_1 = __values(prisma), prisma_1_1 = prisma_1.next(); !prisma_1_1.done; prisma_1_1 = prisma_1.next()) {
+                            item = prisma_1_1.value;
+                            itemPath = (0, path_1.join)(process.cwd(), path, 'prisma', item);
+                            contents = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'prisma', "".concat(item, ".template"))) || '';
+                            (0, fs_jetpack_1.write)(itemPath, contents);
+                            (0, log_1.Log)("    \u2705  Created prisma/".concat(item).green);
+                        }
+                    }
+                    catch (e_3_1) { e_3 = { error: e_3_1 }; }
+                    finally {
+                        try {
+                            if (prisma_1_1 && !prisma_1_1.done && (_c = prisma_1.return)) _c.call(prisma_1);
+                        }
+                        finally { if (e_3) throw e_3.error; }
+                    }
+                    redux = [
+                        'hooks.tsx',
+                        'provider.tsx',
+                        'reducer.tsx',
+                        'reducers.json',
+                        'store.tsx'
+                    ];
+                    try {
+                        for (redux_1 = __values(redux), redux_1_1 = redux_1.next(); !redux_1_1.done; redux_1_1 = redux_1.next()) {
+                            item = redux_1_1.value;
+                            itemPath = (0, path_1.join)(process.cwd(), path, 'redux', item);
+                            contents = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'redux', "".concat(item, ".template"))) || '';
+                            (0, fs_jetpack_1.write)(itemPath, contents);
+                            (0, log_1.Log)("    \u2705  Created redux/".concat(item).green);
+                        }
+                    }
+                    catch (e_4_1) { e_4 = { error: e_4_1 }; }
+                    finally {
+                        try {
+                            if (redux_1_1 && !redux_1_1.done && (_d = redux_1.return)) _d.call(redux_1);
+                        }
+                        finally { if (e_4) throw e_4.error; }
+                    }
+                    reduxSlicePath = (0, path_1.join)(process.cwd(), path, 'redux', 'slice', 'counter.tsx');
+                    reduxSliceContents = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'redux', 'slice', 'counter.tsx.template')) || '';
+                    (0, fs_jetpack_1.write)(reduxSlicePath, reduxSliceContents);
+                    (0, log_1.Log)('    ✅  Created redux/slice/counter.tsx'.green);
+                    app = [
+                        'layout.tsx',
+                        'page.tsx'
+                    ];
+                    try {
+                        for (app_1 = __values(app), app_1_1 = app_1.next(); !app_1_1.done; app_1_1 = app_1.next()) {
+                            item = app_1_1.value;
+                            itemPath = (0, path_1.join)(process.cwd(), path, 'app', item);
+                            contents = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'app', "".concat(item, ".template"))) || '';
+                            (0, fs_jetpack_1.write)(itemPath, contents);
+                            (0, log_1.Log)("    \u2705  Created app/".concat(item).green);
+                        }
+                    }
+                    catch (e_5_1) { e_5 = { error: e_5_1 }; }
+                    finally {
+                        try {
+                            if (app_1_1 && !app_1_1.done && (_e = app_1.return)) _e.call(app_1);
+                        }
+                        finally { if (e_5) throw e_5.error; }
+                    }
                     return [2 /*return*/];
             }
         });

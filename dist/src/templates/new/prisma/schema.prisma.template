@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Account {
+  id          String   @id @default(uuid()) @db.Char(36)
+  username    String   @unique @db.VarChar(128)
+  posts       Post[]
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @updatedAt
+
+  @@index(dateCreated)
+}
+
+model Post {
+  id          String   @id @default(uuid()) @db.Char(36)
+  accountId   String   @db.VarChar(128)
+  title       String   @db.VarChar(256)
+  content     String   @db.Text()
+  account     Account  @relation(fields: accountId, references: id)
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @updatedAt
+
+  @@index(accountId)
+  @@index(dateCreated)
+}

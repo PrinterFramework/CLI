@@ -44,23 +44,20 @@ var match_1 = require("../helpers/match");
 function injectSupergent(type, component) {
     var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var filePath, pathArray, fileName, fileContents, fileComponentPath, injectionLine, tempContents, superAgentFlow, newContents, fileComponentPath;
+        var filePath, pathArray, fileName, fileContents, injectionLine, tempContents, superAgentFlow, newContents, fileComponentPath;
         return __generator(this, function (_b) {
             filePath = (0, path_1.join)(process.cwd(), component);
             pathArray = component.split('/');
             fileName = pathArray[pathArray.length - 1];
             fileContents = '';
             if (filePath.indexOf('.tsx') === -1) {
-                if ((0, fs_jetpack_1.exists)(filePath) === 'dir') {
-                    fileComponentPath = (0, path_1.join)(process.cwd(), component, "".concat(fileName, ".component.tsx"));
-                    fileContents = (0, fs_jetpack_1.read)(fileComponentPath) || '';
-                }
-                else {
-                    fileContents = (0, fs_jetpack_1.read)("".concat(filePath, ".tsx")) || '';
-                }
+                fileContents = (0, fs_jetpack_1.read)("".concat(filePath, ".tsx")) || '';
             }
             else {
                 fileContents = (0, fs_jetpack_1.read)("".concat(filePath)) || '';
+            }
+            if ((0, match_1.findMatches)(fileContents, (0, match_1.stateMatcher)()).length === 0 && (0, match_1.findMatches)(fileContents, (0, match_1.effectMatcher)()).length === 0) {
+                fileContents = 'import { useState, useEffect } from \'react\'' + '\n' + fileContents;
             }
             if ((0, match_1.findMatches)(fileContents, (0, match_1.stateMatcher)()).length === 0) {
                 fileContents = 'import { useState } from \'react\'' + '\n' + fileContents;

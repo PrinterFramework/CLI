@@ -5,11 +5,15 @@
 ## Automation Tooling for Next, Redux and Prisma
 
 ![license](https://img.shields.io/badge/license-AGPLv3-blue.svg)
-![version](https://img.shields.io/badge/version-1.3.40-blue.svg)
+![version](https://img.shields.io/badge/version-2.0.0-blue.svg)
 [![CircleCI](https://circleci.com/gh/PrinterFramework/CLI.svg?style=svg)](https://circleci.com/gh/PrinterFramework/CLI)
 [![codecov](https://codecov.io/gh/PrinterFramework/CLI/branch/master/graph/badge.svg)](https://codecov.io/gh/PrinterFramework/CLI)
 
-Learn how to use Printer at [prntr.click](https://prntr.click).
+**Printer v1.x.x** is compatible with the old Next patterns. You can review the documentation on the v1 website: [v1.prntr.click/docs](https://v1.prntr.click/docs)
+
+**Printer v2.x.x** leverages the Next App Directory pattern. This will be on the main documentation website: [prntr.click/docs](https://prntr.click/docs)
+
+Review the [CHANGELOG](./CHANGELOG.md) for any updates made to the project.
 
 ## How it works
 
@@ -35,10 +39,6 @@ cd printer-sample
 # Create a new component
 printer component components/component
 ```
-
-Review the documentation on [prntr.click/docs](https://prntr.click/docs).
-
-Review the [CHANGELOG](./CHANGELOG.md) for any updates made to the project.
 
 ## Comments and Feedback
 

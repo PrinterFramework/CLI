@@ -5,32 +5,8 @@ import { Log } from '../helpers/log'
 import { randomBytes } from 'crypto'
 
 export async function generateNewProject (path: string = '.') {
-  const readmePath = join(process.cwd(), path, 'README.md')
-  const appPath = join(process.cwd(), path, 'pages', '_app.tsx')
-  const documentPath = join(process.cwd(), path, 'pages', '_document.tsx')
-  const babelPath = join(process.cwd(), path, '.babelrc')
-  const gitignorePath = join(process.cwd(), path, '.gitignore')
-  const gitkeepPath = join(process.cwd(), path, '.gitkeep')
-  const envdevPath = join(process.cwd(), path, '.env.dev')
-  const gitkeepPublicPath = join(process.cwd(), path, 'public', '.gitkeep')
-  const indexPath = join(process.cwd(), path, 'pages', 'index.tsx')
-  const utilSessionPath = join(process.cwd(), path, 'util', 'session.ts')
-  const resetCssPath = join(process.cwd(), path, 'scss', 'reset.scss')
-  const printerScssPath = join(process.cwd(), path, 'scss', 'printer.scss')
-  const themeScssPath = join(process.cwd(), path, 'scss', 'theme.scss')
-  const uiScssPath = join(process.cwd(), path, 'scss', 'ui.scss')
-  const prismaClientPath = join(process.cwd(), path, 'prisma', 'client.ts')
-  const prismaSchemaPath = join(process.cwd(), path, 'prisma', 'schema.prisma')
-  const packagePath = join(process.cwd(), path, 'package.json')
-  const wrapperPath = join(process.cwd(), path, 'redux', 'wrapper.tsx')
-  const reducerPath = join(process.cwd(), path, 'redux', 'reducer.tsx')
-  const reducersPath = join(process.cwd(), path, 'redux', 'reducers.json')
-  const tsconfigPath = join(process.cwd(), path, 'tsconfig.json')
-  const precommitPath = join(process.cwd(), path, '.husky', 'pre-commit')
-  const eslintrcPath = join(process.cwd(), path, '.eslintrc.js')
-  const printerConfigPath = join(process.cwd(), path, 'printer.config.json')
-
-  if (exists(printerConfigPath) !== false) {
+  const configPath = join(process.cwd(), path, 'printer.config.json')
+  if (exists(configPath) !== false) {
     const result = await prompts({
       type: 'confirm',
       name: 'overwrite',
@@ -42,112 +18,129 @@ export async function generateNewProject (path: string = '.') {
     }
   }
 
+  const root = [
+    'printer.config.json',
+    '.env.dev.local',
+    '.eslintrc.js',
+    '.gitignore',
+    'middleware.tsx',
+    'next.config.js',
+    'package.json',
+    'README.md',
+    'tsconfig.json'
+  ]
+
+  for (const item of root) {
+    const itemPath = join(process.cwd(), path, item)
+    let contents = read(join(__dirname, '..', 'templates', 'new', `${item}.template`)) || ''
+    if (item === '.env.dev.local') {
+      contents = contents.replaceAll('{{password}}', randomBytes(32).toString('hex'))
+    }
+
+    write(
+      itemPath,
+      contents
+    )
+    Log(`    ✅  Created ${item}`.green)
+  }
+
   write(
-    readmePath,
-    read(join(__dirname, '..', 'templates', 'new', 'readme.template')) || ''
+    join(process.cwd(), path, 'public', '.gitkeep'),
+    ''
   )
-  Log('    ✅  Created README.md'.green)
+
+  const sessionPath = join(process.cwd(), path, 'util', 'session.ts')
+  let sessionContents = read(join(__dirname, '..', 'templates', 'new', 'util', 'session.ts.template')) || ''
+  sessionContents = sessionContents.replaceAll('{{password}}', randomBytes(32).toString('hex'))
   write(
-    babelPath,
-    read(join(__dirname, '..', 'templates', 'new', 'babelrc.template')) || ''
-  )
-  Log('    ✅  Created .babelrc'.green)
-  write(
-    gitignorePath,
-    read(join(__dirname, '..', 'templates', 'new', 'gitignore.template')) || ''
-  )
-  Log('    ✅  Created .gitignore'.green)
-  write(gitkeepPath, '')
-  Log('    ✅  Created .gitkeep'.green)
-  write(envdevPath, read(join(__dirname, '..', 'templates', 'new', 'env.dev.template')) || '')
-  Log('    ✅  Created .env.dev'.green)
-  write(gitkeepPublicPath, '')
-  Log('    ✅  Created public/.gitkeep'.green)
-  write(
-    appPath,
-    read(join(__dirname, '..', 'templates', 'new', '_app.template')) || ''
-  )
-  Log('    ✅  Created pages/_app.tsx'.green)
-  write(
-    documentPath,
-    read(join(__dirname, '..', 'templates', 'new', '_document.template')) || ''
-  )
-  Log('    ✅  Created pages/_document.tsx'.green)
-  write(
-    indexPath,
-    read(join(__dirname, '..', 'templates', 'new', 'index.template')) || ''
-  )
-  Log('    ✅  Created pages/index.tsx'.green)
-  write(
-    utilSessionPath,
-    read(join(__dirname, '..', 'templates', 'new', 'session.template'))?.replaceAll('{{password}}', randomBytes(32).toString('hex')) || ''
+    sessionPath,
+    sessionContents
   )
   Log('    ✅  Created util/session.ts'.green)
+
+  const counterTypePath = join(process.cwd(), path, 'types', 'counter.tsx')
+  const counterTypeContents = read(join(__dirname, '..', 'templates', 'new', 'types', 'counter.tsx.template')) || ''
   write(
-    resetCssPath,
-    read(join(__dirname, '..', 'templates', 'new', 'reset.template')) || ''
+    counterTypePath,
+    counterTypeContents
   )
-  Log('    ✅  Created scss/reset.css'.green)
+  Log('    ✅  Created types/counter.tsx'.green)
+
+  const scss = [
+    'printer.scss',
+    'reset.scss',
+    'theme.scss',
+    'ui.scss',
+    'index.scss'
+  ]
+
+  for (const item of scss) {
+    const itemPath = join(process.cwd(), path, 'scss', item)
+    const contents = read(join(__dirname, '..', 'templates', 'new', 'scss', `${item}.template`)) || ''
+
+    write(
+      itemPath,
+      contents
+    )
+    Log(`    ✅  Created scss/${item}`.green)
+  }
+
+  const prisma = [
+    'client.ts',
+    'schema.prisma'
+  ]
+
+  for (const item of prisma) {
+    const itemPath = join(process.cwd(), path, 'prisma', item)
+    const contents = read(join(__dirname, '..', 'templates', 'new', 'prisma', `${item}.template`)) || ''
+
+    write(
+      itemPath,
+      contents
+    )
+    Log(`    ✅  Created prisma/${item}`.green)
+  }
+
+  const redux = [
+    'hooks.tsx',
+    'provider.tsx',
+    'reducer.tsx',
+    'reducers.json',
+    'store.tsx'
+  ]
+
+  for (const item of redux) {
+    const itemPath = join(process.cwd(), path, 'redux', item)
+    const contents = read(join(__dirname, '..', 'templates', 'new', 'redux', `${item}.template`)) || ''
+
+    write(
+      itemPath,
+      contents
+    )
+    Log(`    ✅  Created redux/${item}`.green)
+  }
+
+  const reduxSlicePath = join(process.cwd(), path, 'redux', 'slice', 'counter.tsx')
+  const reduxSliceContents = read(join(__dirname, '..', 'templates', 'new', 'redux', 'slice', 'counter.tsx.template')) || ''
   write(
-    printerScssPath,
-    read(join(__dirname, '..', 'templates', 'new', 'printer.template')) || ''
+    reduxSlicePath,
+    reduxSliceContents
   )
-  Log('    ✅  Created scss/printer.scss'.green)
-  write(
-    themeScssPath,
-    read(join(__dirname, '..', 'templates', 'new', 'theme.template')) || ''
-  )
-  Log('    ✅  Created scss/theme.scss'.green)
-  write(
-    uiScssPath,
-    read(join(__dirname, '..', 'templates', 'new', 'ui.template')) || ''
-  )
-  Log('    ✅  Created scss/ui.scss'.green)
-  write(
-    prismaClientPath,
-    read(join(__dirname, '..', 'templates', 'new', 'prisma.client.template')) || ''
-  )
-  Log('    ✅  Created prisma/client.ts'.green)
-  write(
-    prismaSchemaPath,
-    read(join(__dirname, '..', 'templates', 'new', 'schema.prisma.template')) || ''
-  )
-  Log('    ✅  Created prisma/schema.prisma'.green)
-  write(
-    packagePath,
-    read(join(__dirname, '..', 'templates', 'new', 'package.template')) || ''
-  )
-  Log('    ✅  Created package.json'.green)
-  write(
-    wrapperPath,
-    read(join(__dirname, '..', 'templates', 'new', 'wrapper.template')) || ''
-  )
-  Log('    ✅  Created redux/wrapper.tsx'.green)
-  write(
-    reducerPath,
-    read(join(__dirname, '..', 'templates', 'new', 'reducer.template')) || ''
-  )
-  Log('    ✅  Created redux/reducer.tsx'.green)
-  write(reducersPath, '[]')
-  Log('    ✅  Created redux/reducers.json'.green)
-  write(
-    tsconfigPath,
-    read(join(__dirname, '..', 'templates', 'new', 'tsconfig.template')) || ''
-  )
-  Log('    ✅  Created tsconfig.json'.green)
-  write(
-    precommitPath,
-    read(join(__dirname, '..', 'templates', 'new', 'precommit.template')) || ''
-  )
-  Log('    ✅  Created .husky/pre-commit'.green)
-  write(
-    eslintrcPath,
-    read(join(__dirname, '..', 'templates', 'new', 'eslintrc.template')) || ''
-  )
-  Log('    ✅  Created printer.config.json'.green)
-  write(
-    printerConfigPath,
-    read(join(__dirname, '..', 'templates', 'new', 'printer.config.template')) || ''
-  )
-  Log('    ✅  Created .eslintrc.js'.green)
+  Log('    ✅  Created redux/slice/counter.tsx'.green)
+
+  const app = [
+    'layout.tsx',
+    'page.tsx'
+  ]
+
+  for (const item of app) {
+    const itemPath = join(process.cwd(), path, 'app', item)
+    const contents = read(join(__dirname, '..', 'templates', 'new', 'app', `${item}.template`)) || ''
+
+    write(
+      itemPath,
+      contents
+    )
+    Log(`    ✅  Created app/${item}`.green)
+  }
 }

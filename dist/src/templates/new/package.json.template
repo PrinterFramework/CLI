@@ -1,0 +1,43 @@
+{
+    "name": "@printerframework/template",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "next dev --port 4200",
+        "build": "npm run prisma && next build",
+        "start": "next start",
+        "lint": "eslint . --ext ts,tsx --resolve-plugins-relative-to .",
+        "scss": "node-sass -r scss/printer.scss -o scss/debug",
+        "prisma": "npx prisma generate",
+        "prisma:update": "npx prisma generate && npx prisma db push"
+    },
+    "dependencies": {
+        "@prisma/client": "^4.1.0",
+        "@reduxjs/toolkit": "^1.7.1",
+        "iron-session": "8.0.0-alpha.0",
+        "next": "^13.4.7",
+        "prisma": "^4.1.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-redux": "^7.2.6",
+        "sass": "^1.54.3",
+        "superagent": "^8.0.9"
+    },
+    "devDependencies": {
+        "@types/node": "^17.0.13",
+        "@types/superagent": "^4.1.16",
+        "@typescript-eslint/eslint-plugin": "^5.60.0",
+        "@typescript-eslint/parser": "^5.14.0",
+        "eslint": "^8.43.0",
+        "eslint-config-next": "^13.4.7",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-config-standard": "^16.0.3",
+        "eslint-plugin-import": "^2.25.4",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^4.0.0",
+        "eslint-plugin-promise": "^5.2.0",
+        "eslint-plugin-react": "^7.29.3",
+        "node-sass": "^7.0.1",
+        "prettier": "^2.5.1",
+        "typescript": "^5.1.3"
+    }
+}

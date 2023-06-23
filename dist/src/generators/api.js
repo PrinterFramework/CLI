@@ -44,15 +44,13 @@ var prompts_1 = __importDefault(require("prompts"));
 var path_1 = require("path");
 var fs_jetpack_1 = require("fs-jetpack");
 var log_1 = require("../helpers/log");
-var nomenclature_1 = require("../helpers/nomenclature");
 function generateApi(path) {
-    var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var apiPath, result, pathArray, fileName, name, apiTemplate;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var apiPath, result, apiTemplate;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    apiPath = (0, path_1.join)(process.cwd(), 'pages', 'api', "".concat(path, ".tsx"));
+                    apiPath = (0, path_1.join)(process.cwd(), 'app', 'api', "".concat(path, "/route.tsx"));
                     if (!((0, fs_jetpack_1.exists)(apiPath) !== false)) return [3 /*break*/, 2];
                     return [4 /*yield*/, (0, prompts_1.default)({
                             type: 'confirm',
@@ -60,18 +58,15 @@ function generateApi(path) {
                             message: 'This api already exists, overwrite it?'
                         })];
                 case 1:
-                    result = _b.sent();
+                    result = _a.sent();
                     if (result.overwrite === false) {
                         return [2 /*return*/];
                     }
-                    _b.label = 2;
+                    _a.label = 2;
                 case 2:
-                    pathArray = path.split('/');
-                    fileName = pathArray[pathArray.length - 1];
-                    name = (0, nomenclature_1.formatName)(fileName);
-                    apiTemplate = (_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'api.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{name}}', name);
+                    apiTemplate = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'api.template'));
                     (0, fs_jetpack_1.write)(apiPath, apiTemplate || '');
-                    (0, log_1.Log)("    \u2705  Created pages/api/".concat(path, ".tsx").green);
+                    (0, log_1.Log)("    \u2705  Created app/api/".concat(path, "/route.tsx").green);
                     return [2 /*return*/];
             }
         });

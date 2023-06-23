@@ -45,13 +45,13 @@ var path_1 = require("path");
 var fs_jetpack_1 = require("fs-jetpack");
 var log_1 = require("../helpers/log");
 function generateCrud(model) {
-    var _a, _b, _c, _d, _e;
+    var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var basePath, result, createPath, createTemplate, updatePath, updateTemplate, getPath, getTemplate, listPath, listTemplate, deletePath, deleteTemplate;
-        return __generator(this, function (_f) {
-            switch (_f.label) {
+        var basePath, result, routePath, routeTemplate;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    basePath = (0, path_1.join)(process.cwd(), 'pages', 'api', model);
+                    basePath = (0, path_1.join)(process.cwd(), 'app', 'api', model);
                     if (!((0, fs_jetpack_1.exists)(basePath) !== false)) return [3 /*break*/, 2];
                     return [4 /*yield*/, (0, prompts_1.default)({
                             type: 'confirm',
@@ -59,32 +59,16 @@ function generateCrud(model) {
                             message: 'Routes already exist in this folder, overwrite it?'
                         })];
                 case 1:
-                    result = _f.sent();
+                    result = _b.sent();
                     if (result.overwrite === false) {
                         return [2 /*return*/];
                     }
-                    _f.label = 2;
+                    _b.label = 2;
                 case 2:
-                    createPath = (0, path_1.join)(basePath, 'create.tsx');
-                    createTemplate = (_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'crud', 'create.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{model}}', model);
-                    (0, fs_jetpack_1.write)(createPath, createTemplate || '');
-                    (0, log_1.Log)("    \u2705  Created pages/api/".concat(model, "/create.tsx").green);
-                    updatePath = (0, path_1.join)(basePath, 'update.tsx');
-                    updateTemplate = (_b = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'crud', 'update.template'))) === null || _b === void 0 ? void 0 : _b.replaceAll('{{model}}', model);
-                    (0, fs_jetpack_1.write)(updatePath, updateTemplate || '');
-                    (0, log_1.Log)("    \u2705  Created pages/api/".concat(model, "/update.tsx").green);
-                    getPath = (0, path_1.join)(basePath, 'get.tsx');
-                    getTemplate = (_c = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'crud', 'get.template'))) === null || _c === void 0 ? void 0 : _c.replaceAll('{{model}}', model);
-                    (0, fs_jetpack_1.write)(getPath, getTemplate || '');
-                    (0, log_1.Log)("    \u2705  Created pages/api/".concat(model, "/get.tsx").green);
-                    listPath = (0, path_1.join)(basePath, 'list.tsx');
-                    listTemplate = (_d = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'crud', 'list.template'))) === null || _d === void 0 ? void 0 : _d.replaceAll('{{model}}', model);
-                    (0, fs_jetpack_1.write)(listPath, listTemplate || '');
-                    (0, log_1.Log)("    \u2705  Created pages/api/".concat(model, "/list.tsx").green);
-                    deletePath = (0, path_1.join)(basePath, 'delete.tsx');
-                    deleteTemplate = (_e = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'crud', 'delete.template'))) === null || _e === void 0 ? void 0 : _e.replaceAll('{{model}}', model);
-                    (0, fs_jetpack_1.write)(deletePath, deleteTemplate || '');
-                    (0, log_1.Log)("    \u2705  Created pages/api/".concat(model, "/delete.tsx").green);
+                    routePath = (0, path_1.join)(basePath, 'route.tsx');
+                    routeTemplate = (_a = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'crud.template'))) === null || _a === void 0 ? void 0 : _a.replaceAll('{{model}}', model);
+                    (0, fs_jetpack_1.write)(routePath, routeTemplate || '');
+                    (0, log_1.Log)("    \u2705  Created pages/api/".concat(model, "/route.tsx").green);
                     return [2 /*return*/];
             }
         });
