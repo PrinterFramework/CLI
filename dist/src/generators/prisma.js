@@ -97,7 +97,7 @@ function formatModel(models) {
     try {
         for (var models_1 = __values(models), models_1_1 = models_1.next(); !models_1_1.done; models_1_1 = models_1.next()) {
             var model = models_1_1.value;
-            var type = model.type.toUpperCase().trim();
+            var type = model.type.toUpperCase().trim().replaceAll('?', '');
             var tm = type.replaceAll('[]', '');
             var imported = false;
             var newType = 'any';

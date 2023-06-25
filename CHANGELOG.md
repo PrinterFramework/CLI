@@ -1,5 +1,11 @@
 # 🛠️ CHANGELOG
 
+## v2.0.2
+
+- Ensure API routes have `application/json` header
+
+- Fix `printer prisma` `?` error
+
 ## v2.0.1
 
 - Fix injectable formatting issues

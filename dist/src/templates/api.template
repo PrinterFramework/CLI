@@ -5,6 +5,7 @@ export async function GET(req: NextRequest) {
   const res = new NextResponse()
   const session = await getSession(req, res)
   const { searchParams } = new URL(req.url)
+  res.headers.set('Content-Type', 'application/json')
 
   try {
     return createResponse(

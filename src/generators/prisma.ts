@@ -34,7 +34,7 @@ function formatModel (models: ModelType[]): ModelType[] {
   const names = models.map((item) => item.name.toUpperCase())
 
   for (const model of models) {
-    const type = model.type.toUpperCase().trim()
+    const type = model.type.toUpperCase().trim().replaceAll('?', '')
     const tm = type.replaceAll('[]', '')
     let imported = false
     let newType = 'any'
