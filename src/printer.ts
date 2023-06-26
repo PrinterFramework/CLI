@@ -7,6 +7,9 @@ import { generateComponent } from './generators/component'
 import { generateSlice } from './generators/slice'
 import { generateType } from './generators/type'
 import { generatePage } from './generators/page'
+import { generateLayout } from './generators/layout'
+import { generateLoading } from './generators/loading'
+import { generateError } from './generators/error'
 import { generateApi } from './generators/api'
 import { generateCrud } from './generators/crud'
 import { generateScss } from './generators/scss'
@@ -17,7 +20,7 @@ import { SuperagentTypes, injectSupergent } from './generators/superagent'
 export const Printer = new Command('🖨️ Printer')
 
 Printer
-  .version('2.0.2')
+  .version('2.1.0')
   .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.')
   .option('-a, --no-action', 'do not inject actions', false)
   .option('-s, --no-state', 'do not inject state', false)
@@ -74,6 +77,33 @@ Printer
     registerConfig()
     Log('👷  Generating new Printer page'.green)
     await generatePage(path)
+  })
+
+Printer
+  .command('layout <path>')
+  .description('Generate a new layout component')
+  .action(async path => {
+    registerConfig()
+    Log('👷  Generating new layout component'.green)
+    await generateLayout(path)
+  })
+
+Printer
+  .command('loading <path>')
+  .description('Generate a new loading component')
+  .action(async path => {
+    registerConfig()
+    Log('👷  Generating new loading component'.green)
+    await generateLoading(path)
+  })
+
+Printer
+  .command('error <path>')
+  .description('Generate a new error component')
+  .action(async path => {
+    registerConfig()
+    Log('👷  Generating new error component'.green)
+    await generateError(path)
   })
 
 Printer

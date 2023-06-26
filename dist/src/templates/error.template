@@ -1,0 +1,23 @@
+'use client'
+
+import { useEffect } from 'react'
+
+export interface ErrorI {
+  error: Error
+  reset: () => void
+}
+
+export default function ErrorComponent({ error, reset }: ErrorI) {
+  useEffect(() => {
+    console.error(error)
+  }, [error])
+
+  return (
+    <div className="error-page">
+      <h2>Something Went Wrong!</h2>
+      <a className="button" onClick={e => reset()}>
+        Reload Page
+      </a>
+    </div>
+  )
+}

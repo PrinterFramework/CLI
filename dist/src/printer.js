@@ -48,6 +48,9 @@ var component_1 = require("./generators/component");
 var slice_1 = require("./generators/slice");
 var type_1 = require("./generators/type");
 var page_1 = require("./generators/page");
+var layout_1 = require("./generators/layout");
+var loading_1 = require("./generators/loading");
+var error_1 = require("./generators/error");
 var api_1 = require("./generators/api");
 var crud_1 = require("./generators/crud");
 var scss_1 = require("./generators/scss");
@@ -56,7 +59,7 @@ var prisma_1 = require("./generators/prisma");
 var superagent_1 = require("./generators/superagent");
 exports.Printer = new commander_1.Command('🖨️ Printer');
 exports.Printer
-    .version('2.0.2')
+    .version('2.1.0')
     .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.')
     .option('-a, --no-action', 'do not inject actions', false)
     .option('-s, --no-state', 'do not inject state', false);
@@ -150,6 +153,54 @@ exports.Printer
                 (0, config_1.registerConfig)();
                 (0, log_1.Log)('👷  Generating new Printer page'.green);
                 return [4 /*yield*/, (0, page_1.generatePage)(path)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.Printer
+    .command('layout <path>')
+    .description('Generate a new layout component')
+    .action(function (path) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                (0, config_1.registerConfig)();
+                (0, log_1.Log)('👷  Generating new layout component'.green);
+                return [4 /*yield*/, (0, layout_1.generateLayout)(path)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.Printer
+    .command('loading <path>')
+    .description('Generate a new loading component')
+    .action(function (path) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                (0, config_1.registerConfig)();
+                (0, log_1.Log)('👷  Generating new loading component'.green);
+                return [4 /*yield*/, (0, loading_1.generateLoading)(path)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.Printer
+    .command('error <path>')
+    .description('Generate a new error component')
+    .action(function (path) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                (0, config_1.registerConfig)();
+                (0, log_1.Log)('👷  Generating new error component'.green);
+                return [4 /*yield*/, (0, error_1.generateError)(path)];
             case 1:
                 _a.sent();
                 return [2 /*return*/];

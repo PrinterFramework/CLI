@@ -1,5 +1,19 @@
 # 🛠️ CHANGELOG
 
+## 2.1.0
+
+- Updated how metadata is handled
+
+- Added 3 new commands
+
+```bash
+printer layout [path]
+printer loading [path]
+printer error [path]
+```
+
+These commands behave similar to the `page` command. But instead generate layout, loading and error components for pages.
+
 ## v2.0.2
 
 - Ensure API routes have `application/json` header

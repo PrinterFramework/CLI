@@ -1,0 +1,7 @@
+export default function LoadingComponent() {
+  return (
+    <div className="container page center loading-page">
+      <p>Please wait... Loading...</p>
+    </div>
+  )
+}
