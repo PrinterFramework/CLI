@@ -155,16 +155,17 @@ function formatModel(models) {
     }
     return formattedModels;
 }
-function generateImports(models) {
+function generateImports(name, models) {
     var e_4, _a;
     var output = '';
     var hasImports = false;
     try {
         for (var models_3 = __values(models), models_3_1 = models_3.next(); !models_3_1.done; models_3_1 = models_3.next()) {
             var model = models_3_1.value;
-            if (model.imported) {
-                var name = (model.original[0].toUpperCase() + model.original.substring(1)).replaceAll('[', '').replaceAll(']', '');
-                output += "import ".concat(name, "Type from 'types/prisma/").concat(name, "'\n");
+            var circularCheck = model.original.replaceAll('[]', '').replaceAll('?', '').toUpperCase();
+            if (model.imported && circularCheck !== name.toUpperCase()) {
+                var name_1 = (model.original[0].toUpperCase() + model.original.substring(1)).replaceAll('[', '').replaceAll(']', '');
+                output += "import ".concat(name_1, "Type from 'types/prisma/").concat(name_1, "'\n");
                 hasImports = true;
             }
         }
@@ -184,7 +185,7 @@ function generateImports(models) {
 exports.generateImports = generateImports;
 function generatePrismaTypes() {
     return __awaiter(this, void 0, void 0, function () {
-        var prismaPath, prismaFile, matches, matches_1, matches_1_1, match, models, index, data, name, match2, indexEnd, modelContent, lines, lines_1, lines_1_1, line, lineFmt, tokens, tokenFmt, name_1, type, dataMap, importMap, typeFile, typeInject, dataMap_1, dataMap_1_1, item, typePath;
+        var prismaPath, prismaFile, matches, matches_1, matches_1_1, match, models, index, data, name, match2, indexEnd, modelContent, lines, lines_1, lines_1_1, line, lineFmt, tokens, tokenFmt, name_2, type, dataMap, importMap, typeFile, typeInject, dataMap_1, dataMap_1_1, item, typePath;
         var e_5, _a, e_6, _b, e_7, _c;
         return __generator(this, function (_d) {
             prismaPath = (0, path_1.join)(process.cwd(), 'prisma', 'schema.prisma');
@@ -210,10 +211,10 @@ function generatePrismaTypes() {
                                     lineFmt = line.trim();
                                     tokens = lineFmt.split(' ');
                                     tokenFmt = tokens.filter(function (token) { return token !== ''; });
-                                    name_1 = (tokenFmt[0] || '');
+                                    name_2 = (tokenFmt[0] || '');
                                     type = (tokenFmt[1] || '').toLowerCase();
-                                    if (name_1 && type) {
-                                        models.push({ original: type, name: name_1, type: type, imported: false });
+                                    if (name_2 && type) {
+                                        models.push({ original: type, name: name_2, type: type, imported: false });
                                     }
                                 }
                             }
@@ -226,7 +227,7 @@ function generatePrismaTypes() {
                             }
                         }
                         dataMap = formatModel(models);
-                        importMap = generateImports(dataMap);
+                        importMap = generateImports(name, dataMap);
                         typeFile = '{{imports}}' + "export interface ".concat(name, "Type {{{injection}}}") + '\n\n' + "export default ".concat(name, "Type") + '\n';
                         typeInject = '';
                         try {

@@ -69,11 +69,12 @@ function formatModel (models: ModelType[]): ModelType[] {
   return formattedModels
 }
 
-export function generateImports (models: ModelType[]): string {
+export function generateImports (name: string, models: ModelType[]): string {
   let output = ''
   let hasImports = false
   for (const model of models) {
-    if (model.imported) {
+    const circularCheck = model.original.replaceAll('[]', '').replaceAll('?', '').toUpperCase()
+    if (model.imported && circularCheck !== name.toUpperCase()) {
       const name = (model.original[0].toUpperCase() + model.original.substring(1)).replaceAll('[', '').replaceAll(']', '')
       output += `import ${name}Type from 'types/prisma/${name}'\n`
       hasImports = true
@@ -121,7 +122,7 @@ export async function generatePrismaTypes () {
       }
 
       const dataMap = formatModel(models)
-      const importMap = generateImports(dataMap)
+      const importMap = generateImports(name, dataMap)
 
       let typeFile = '{{imports}}' + `export interface ${name}Type {{{injection}}}` + '\n\n' + `export default ${name}Type` + '\n'
       let typeInject = ''

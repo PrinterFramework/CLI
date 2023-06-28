@@ -4,6 +4,6 @@ interface ModelType {
     type: string;
     imported: boolean;
 }
-export declare function generateImports(models: ModelType[]): string;
+export declare function generateImports(name: string, models: ModelType[]): string;
 export declare function generatePrismaTypes(): Promise<void>;
 export {};

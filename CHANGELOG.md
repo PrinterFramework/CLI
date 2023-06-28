@@ -1,5 +1,9 @@
 # 🛠️ CHANGELOG
 
+## 2.1.1
+
+- Fix for `prisma` circular import definitions
+
 ## 2.1.0
 
 - Updated how metadata is handled
