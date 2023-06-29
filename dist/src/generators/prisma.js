@@ -120,8 +120,8 @@ function formatModel(models) {
                 try {
                     for (var models_2 = (e_3 = void 0, __values(models)), models_2_1 = models_2.next(); !models_2_1.done; models_2_1 = models_2.next()) {
                         var model_1 = models_2_1.value;
-                        if (type === model_1.type.toUpperCase().trim()) {
-                            newType = (model_1.type[0].toUpperCase() + model_1.type.substring(1) + 'Type').replaceAll('[', '').replaceAll(']', '');
+                        if (type.replaceAll('[]', '').replaceAll('?', '') === model_1.type.replaceAll('[]', '').replaceAll('?', '').toUpperCase().trim()) {
+                            newType = (model_1.type[0].toUpperCase() + model_1.type.substring(1) + 'Type').replaceAll('[', '').replaceAll(']', '').replaceAll('?', '');
                             imported = true;
                         }
                     }
@@ -164,7 +164,7 @@ function generateImports(name, models) {
             var model = models_3_1.value;
             var circularCheck = model.original.replaceAll('[]', '').replaceAll('?', '').toUpperCase();
             if (model.imported && circularCheck !== name.toUpperCase()) {
-                var name_1 = (model.original[0].toUpperCase() + model.original.substring(1)).replaceAll('[', '').replaceAll(']', '');
+                var name_1 = (model.original[0].toUpperCase() + model.original.substring(1)).replaceAll('[', '').replaceAll(']', '').replaceAll('?', '');
                 output += "import ".concat(name_1, "Type from 'types/prisma/").concat(name_1, "'\n");
                 hasImports = true;
             }

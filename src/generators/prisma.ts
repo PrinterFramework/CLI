@@ -47,8 +47,8 @@ function formatModel (models: ModelType[]): ModelType[] {
 
     if (newType === 'any' && names.includes(model.name.toUpperCase())) {
       for (const model of models) {
-        if (type === model.type.toUpperCase().trim()) {
-          newType = (model.type[0].toUpperCase() + model.type.substring(1) + 'Type').replaceAll('[', '').replaceAll(']', '')
+        if (type.replaceAll('[]', '').replaceAll('?', '') === model.type.replaceAll('[]', '').replaceAll('?', '').toUpperCase().trim()) {
+          newType = (model.type[0].toUpperCase() + model.type.substring(1) + 'Type').replaceAll('[', '').replaceAll(']', '').replaceAll('?', '')
           imported = true
         }
       }
@@ -75,7 +75,7 @@ export function generateImports (name: string, models: ModelType[]): string {
   for (const model of models) {
     const circularCheck = model.original.replaceAll('[]', '').replaceAll('?', '').toUpperCase()
     if (model.imported && circularCheck !== name.toUpperCase()) {
-      const name = (model.original[0].toUpperCase() + model.original.substring(1)).replaceAll('[', '').replaceAll(']', '')
+      const name = (model.original[0].toUpperCase() + model.original.substring(1)).replaceAll('[', '').replaceAll(']', '').replaceAll('?', '')
       output += `import ${name}Type from 'types/prisma/${name}'\n`
       hasImports = true
     }

@@ -1,5 +1,9 @@
 # 🛠️ CHANGELOG
 
+## 2.1.2
+
+- Fix `prisma` import definitions to cover all types
+
 ## 2.1.1
 
 - Fix for `prisma` circular import definitions
