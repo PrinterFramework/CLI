@@ -1,17 +1,28 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { setupListeners } from '@reduxjs/toolkit/dist/query'
+import { configureStore, type ThunkAction, type Action } from '@reduxjs/toolkit'
+import {
+  useSelector as useReduxSelector,
+  useDispatch as useReduxDispatch,
+  type TypedUseSelectorHook
+} from 'react-redux'
 import { reducer } from 'redux/reducer'
 
-export const store = configureStore({
+export const reduxStore = configureStore({
   reducer,
-  devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false
     })
 })
 
-setupListeners(store.dispatch)
+export type ReduxStore = typeof reduxStore
+export type ReduxState = ReturnType<typeof reduxStore.getState>
+export type ReduxDispatch = typeof reduxStore.dispatch
+export type ReduxThunkAction<ReturnType = void> = ThunkAction<
+  ReturnType,
+  ReduxState,
+  unknown,
+  Action
+>
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export const useDispatch = () => useReduxDispatch<ReduxDispatch>()
+export const useSelector: TypedUseSelectorHook<ReduxState> = useReduxSelector
