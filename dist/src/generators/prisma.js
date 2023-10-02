@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -88,6 +88,14 @@ var typeMatches = [
     {
         type: 'Date',
         matches: ['DATE', 'DATETIME', 'TIMESTAMP']
+    },
+    {
+        type: 'boolean',
+        matches: ['BOOLEAN']
+    },
+    {
+        type: 'object',
+        matches: ['JSON']
     }
 ];
 function formatModel(models) {
@@ -121,7 +129,7 @@ function formatModel(models) {
                     for (var models_2 = (e_3 = void 0, __values(models)), models_2_1 = models_2.next(); !models_2_1.done; models_2_1 = models_2.next()) {
                         var model_1 = models_2_1.value;
                         if (type.replaceAll('[]', '').replaceAll('?', '') === model_1.type.replaceAll('[]', '').replaceAll('?', '').toUpperCase().trim()) {
-                            newType = (model_1.type[0].toUpperCase() + model_1.type.substring(1) + 'Type').replaceAll('[', '').replaceAll(']', '').replaceAll('?', '');
+                            newType = "".concat(model_1.original.replaceAll('[', '').replaceAll(']', '').replaceAll('?', ''), "Type");
                             imported = true;
                         }
                     }
@@ -139,7 +147,7 @@ function formatModel(models) {
                 inputType += '[]';
             }
             formattedModels.push({
-                original: model.type,
+                original: model.original,
                 name: model.name,
                 type: inputType,
                 imported: imported
@@ -214,7 +222,7 @@ function generatePrismaTypes() {
                                     name_2 = (tokenFmt[0] || '');
                                     type = (tokenFmt[1] || '').toLowerCase();
                                     if (name_2 && type) {
-                                        models.push({ original: type, name: name_2, type: type, imported: false });
+                                        models.push({ original: (tokenFmt[1] || ''), name: name_2, type: type, imported: false });
                                     }
                                 }
                             }

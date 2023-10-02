@@ -4,8 +4,8 @@ orbs:
   node: circleci/node@4.7
 
 workflows:
-    basic:
-      jobs:
-        - node/test:
-            version: '16.10'
-            pkg-manager: yarn
+  basic:
+    jobs:
+      - node/test:
+          version: "18.17.1"
+          pkg-manager: yarn

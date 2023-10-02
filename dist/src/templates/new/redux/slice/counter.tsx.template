@@ -13,7 +13,9 @@ export const counterSlice = createSlice({
   initialState: counterInitialState,
   reducers: {
     // @printer::inject
-    reset: () => counterInitialState,
+    reset: (state) => {
+      state = counterInitialState
+    },
     // @printer::inject
     increment: (state, action: PayloadAction<number>) => {
       state.data.value += action.payload

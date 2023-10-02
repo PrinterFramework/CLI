@@ -1,5 +1,17 @@
 # 🛠️ CHANGELOG
 
+## 2.2.0
+
+- Relationships fixed for prisma
+
+- Deprecate experimental decorations
+
+- Update `package.json` versioning
+
+- Fix prisma client management in development
+
+- Fix redux bug with Next.js 13.5.3
+
 ## 2.1.2
 
 - Fix `prisma` import definitions to cover all types

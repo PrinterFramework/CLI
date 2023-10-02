@@ -26,6 +26,14 @@ const typeMatches = [
   {
     type: 'Date',
     matches: ['DATE', 'DATETIME', 'TIMESTAMP']
+  },
+  {
+    type: 'boolean',
+    matches: ['BOOLEAN']
+  },
+  {
+    type: 'object',
+    matches: ['JSON']
   }
 ] as TypeMatches[]
 
@@ -48,7 +56,7 @@ function formatModel (models: ModelType[]): ModelType[] {
     if (newType === 'any' && names.includes(model.name.toUpperCase())) {
       for (const model of models) {
         if (type.replaceAll('[]', '').replaceAll('?', '') === model.type.replaceAll('[]', '').replaceAll('?', '').toUpperCase().trim()) {
-          newType = (model.type[0].toUpperCase() + model.type.substring(1) + 'Type').replaceAll('[', '').replaceAll(']', '').replaceAll('?', '')
+          newType = `${model.original.replaceAll('[', '').replaceAll(']', '').replaceAll('?', '')}Type`
           imported = true
         }
       }
@@ -59,7 +67,7 @@ function formatModel (models: ModelType[]): ModelType[] {
       inputType += '[]'
     }
     formattedModels.push({
-      original: model.type,
+      original: model.original,
       name: model.name,
       type: inputType,
       imported
@@ -116,7 +124,7 @@ export async function generatePrismaTypes () {
           const type = (tokenFmt[1] || '').toLowerCase()
 
           if (name && type) {
-            models.push({ original: type, name, type, imported: false })
+            models.push({ original: (tokenFmt[1] || ''), name, type, imported: false })
           }
         }
       }
