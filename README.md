@@ -5,7 +5,7 @@
 ## Automation Tooling for Next, Redux and Prisma
 
 ![license](https://img.shields.io/badge/license-AGPLv3-blue.svg)
-![version](https://img.shields.io/badge/version-2.2.1-blue.svg)
+![version](https://img.shields.io/badge/version-2.2.2-blue.svg)
 [![CircleCI](https://circleci.com/gh/PrinterFramework/CLI.svg?style=svg)](https://circleci.com/gh/PrinterFramework/CLI)
 
 **Printer v1.x.x** is compatible with the old Next patterns. You can review the documentation on the v1 website: [v1.prntr.click/docs](https://v1.prntr.click/docs)

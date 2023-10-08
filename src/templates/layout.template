@@ -1,7 +1,6 @@
-import { Metadata } from 'next'
-import { ReactNode } from 'react'
+import { ReactNode, Suspense } from 'react'
 
-export const metadata: Metadata = {
+export const metadata = {
 
 }
 
@@ -11,8 +10,8 @@ export interface LayoutI {
 
 export default function LayoutComponent({ children }: LayoutI) {
   return (
-    <div>
+    <Suspense>
       {children}
-    </div>
+    </Suspense>
   )
 }

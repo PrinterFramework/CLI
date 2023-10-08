@@ -59,7 +59,7 @@ var prisma_1 = require("./generators/prisma");
 var superagent_1 = require("./generators/superagent");
 exports.Printer = new commander_1.Command('🖨️ Printer');
 exports.Printer
-    .version('2.2.1')
+    .version('2.2.2')
     .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.')
     .option('-a, --no-action', 'do not inject actions', false)
     .option('-s, --no-state', 'do not inject state', false);

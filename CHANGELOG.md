@@ -1,5 +1,13 @@
 # 🛠️ CHANGELOG
 
+## 2.2.2
+
+- Updated `app/layout.tsx` to use suspense boundaries.
+
+- `printer layout` now uses a suspense boundary.
+
+- `printer loading` now uses a suspense boundary.
+
 ## 2.2.1
 
 - In `printer new`, forgot to add `components/counter.tsx` to build list.
