@@ -59,10 +59,10 @@ var crypto_1 = require("crypto");
 function generateNewProject(path) {
     if (path === void 0) { path = '.'; }
     return __awaiter(this, void 0, void 0, function () {
-        var configPath, result, root, root_1, root_1_1, item, itemPath, contents, sessionPath, sessionContents, counterTypePath, counterTypeContents, scss, scss_1, scss_1_1, item, itemPath, contents, prisma, prisma_1, prisma_1_1, item, itemPath, contents, redux, redux_1, redux_1_1, item, itemPath, contents, reduxSlicePath, reduxSliceContents, app, app_1, app_1_1, item, itemPath, contents;
-        var e_1, _a, e_2, _b, e_3, _c, e_4, _d, e_5, _e;
-        return __generator(this, function (_f) {
-            switch (_f.label) {
+        var configPath, result, root, root_1, root_1_1, item, itemPath, contents, sessionPath, sessionContents, counterTypePath, counterTypeContents, scss, scss_1, scss_1_1, item, itemPath, contents, prisma, prisma_1, prisma_1_1, item, itemPath, contents, redux, redux_1, redux_1_1, item, itemPath, contents, reduxSlicePath, reduxSliceContents, app, app_1, app_1_1, item, itemPath, contents, components, components_1, components_1_1, item, itemPath, contents;
+        var e_1, _a, e_2, _b, e_3, _c, e_4, _d, e_5, _e, e_6, _f;
+        return __generator(this, function (_g) {
+            switch (_g.label) {
                 case 0:
                     configPath = (0, path_1.join)(process.cwd(), path, 'printer.config.json');
                     if (!((0, fs_jetpack_1.exists)(configPath) !== false)) return [3 /*break*/, 2];
@@ -72,11 +72,11 @@ function generateNewProject(path) {
                             message: 'A project already exists here, overwrite it?'
                         })];
                 case 1:
-                    result = _f.sent();
+                    result = _g.sent();
                     if (result.overwrite === false) {
                         return [2 /*return*/];
                     }
-                    _f.label = 2;
+                    _g.label = 2;
                 case 2:
                     root = [
                         'printer.config.json',
@@ -207,6 +207,25 @@ function generateNewProject(path) {
                             if (app_1_1 && !app_1_1.done && (_e = app_1.return)) _e.call(app_1);
                         }
                         finally { if (e_5) throw e_5.error; }
+                    }
+                    components = [
+                        'counter.tsx'
+                    ];
+                    try {
+                        for (components_1 = __values(components), components_1_1 = components_1.next(); !components_1_1.done; components_1_1 = components_1.next()) {
+                            item = components_1_1.value;
+                            itemPath = (0, path_1.join)(process.cwd(), path, 'components', item);
+                            contents = (0, fs_jetpack_1.read)((0, path_1.join)(__dirname, '..', 'templates', 'new', 'components', "".concat(item, ".template"))) || '';
+                            (0, fs_jetpack_1.write)(itemPath, contents);
+                            (0, log_1.Log)("    \u2705  Created components/".concat(item).green);
+                        }
+                    }
+                    catch (e_6_1) { e_6 = { error: e_6_1 }; }
+                    finally {
+                        try {
+                            if (components_1_1 && !components_1_1.done && (_f = components_1.return)) _f.call(components_1);
+                        }
+                        finally { if (e_6) throw e_6.error; }
                     }
                     return [2 /*return*/];
             }

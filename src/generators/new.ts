@@ -143,4 +143,19 @@ export async function generateNewProject (path: string = '.') {
     )
     Log(`    ✅  Created app/${item}`.green)
   }
+
+  const components = [
+    'counter.tsx'
+  ]
+
+  for (const item of components) {
+    const itemPath = join(process.cwd(), path, 'components', item)
+    const contents = read(join(__dirname, '..', 'templates', 'new', 'components', `${item}.template`)) || ''
+
+    write(
+      itemPath,
+      contents
+    )
+    Log(`    ✅  Created components/${item}`.green)
+  }
 }

@@ -1,5 +1,11 @@
 # 🛠️ CHANGELOG
 
+## 2.2.1
+
+- In `printer new`, forgot to add `components/counter.tsx` to build list.
+
+- Make sure example redux slice `reset()` works as intended with 13.5.3.
+
 ## 2.2.0
 
 - Relationships fixed for prisma
