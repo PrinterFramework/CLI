@@ -20,7 +20,7 @@ import { SuperagentTypes, injectSupergent } from './generators/superagent'
 export const Printer = new Command('🖨️ Printer')
 
 Printer
-  .version('2.2.2')
+  .version('2.2.3')
   .description('🖨️ Printer: Automation Tooling for Next, Redux and Prisma.')
   .option('-a, --no-action', 'do not inject actions', false)
   .option('-s, --no-state', 'do not inject state', false)

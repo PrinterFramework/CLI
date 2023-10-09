@@ -102,7 +102,6 @@ export async function generateNewProject (path: string = '.') {
   }
 
   const redux = [
-    'hooks.tsx',
     'provider.tsx',
     'reducer.tsx',
     'reducers.json',

@@ -1,5 +1,11 @@
 # 🛠️ CHANGELOG
 
+## 2.2.3
+
+- Make sure to add `eslint-plugin-n` to `package.json`
+
+- Remove `redux/hooks.tsx` since it's now deprecated in the 13.5.3 to Printer.
+
 ## 2.2.2
 
 - Updated `app/layout.tsx` to use suspense boundaries.

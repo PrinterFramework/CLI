@@ -162,7 +162,6 @@ function generateNewProject(path) {
                         finally { if (e_3) throw e_3.error; }
                     }
                     redux = [
-                        'hooks.tsx',
                         'provider.tsx',
                         'reducer.tsx',
                         'reducers.json',
