@@ -1,8 +1,9 @@
 import 'scss/printer.scss'
+import { Metadata } from 'next'
 import { ReactNode, Suspense } from 'react'
 import { ReduxProvider } from 'redux/provider'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Printer',
   description: 'Automation Tooling for Next, Redux and Prisma'
 }
@@ -13,12 +14,12 @@ export interface LayoutI {
 
 export default function RootLayout({ children }: LayoutI) {
   return (
-    <ReduxProvider>
-      <Suspense>
-        <html lang="en">
-          <body>{children}</body>
-        </html>
-      </Suspense>
-    </ReduxProvider>
+    <html lang="en">
+      <body>
+        <ReduxProvider>
+          <Suspense>{children}</Suspense>
+        </ReduxProvider>
+      </body>
+    </html>
   )
 }

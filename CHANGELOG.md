@@ -1,5 +1,11 @@
 # 🛠️ CHANGELOG
 
+## 2.2.4
+
+- Fix default `layout.tsx` suspense boundary.
+
+- Update default counter slice to reset properly.
+
 ## 2.2.3
 
 - Make sure to add `eslint-plugin-n` to `package.json`
