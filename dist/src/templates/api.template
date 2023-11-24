@@ -1,26 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getSession, createResponse } from 'util/session'
+import { NextRequest } from 'next/server'
+import { getSession } from 'util/session'
 
 export async function GET(req: NextRequest) {
-  const res = new NextResponse()
-  const session = await getSession(req, res)
+  const session = await getSession()
   const { searchParams } = new URL(req.url)
-  res.headers.set('Content-Type', 'application/json')
 
   try {
-    return createResponse(
-      res,
-      JSON.stringify({
+    return Response.json(
+      {
         status: 'OK',
-        session
-      }),
+        result: null
+      },
       { status: 200 }
     )
   } catch (error) {
     console.error(error)
-    return createResponse(
-      res,
-      JSON.stringify({ status: 'ERROR', error }),
+    return Response.json(
+      {
+        status: 'ERROR',
+        error
+      },
       { status: 500 }
     )
   }
