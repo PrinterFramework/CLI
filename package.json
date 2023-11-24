@@ -1,7 +1,7 @@
 {
   "name": "@printerframework/cli",
   "description": "🖨️ Automation Tooling for Next, Redux and Prisma.",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "private": false,
   "preferGlobal": true,
   "repository": "https://github.com/PrinterFramework/CLI.git",

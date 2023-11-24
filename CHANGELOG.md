@@ -1,5 +1,15 @@
 # 🛠️ CHANGELOG
 
+## 2.2.5
+
+- Updated package.json to Next 14
+
+- Switched to static semantic versioning in package.json
+
+- Updated to iron-session 8.0.1
+
+- Improved and cleaned up api macro
+
 ## 2.2.4
 
 - Fix default `layout.tsx` suspense boundary.
